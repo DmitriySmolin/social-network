@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import "./App.css";
-import Header from "./components/Header/Header";
-import Navbar from "./components/Navbar/Navbar";
-import Dialogs from "./components/Dialogs/Dialogs";
-import Profile from "./components/Profile/Profile";
-import News from "./components/News/News";
-import Music from "./components/Music/Music";
-import Settings from "./components/Settings/Settings";
-import { Route } from "react-router-dom";
-import { RootStateType, PostType } from "./redux/state";
+import React, { useState } from 'react';
+import './App.css';
+import Header from './components/Header/Header';
+import Navbar from './components/Navbar/Navbar';
+import Dialogs from './components/Dialogs/Dialogs';
+import Profile from './components/Profile/Profile';
+import News from './components/News/News';
+import Music from './components/Music/Music';
+import Settings from './components/Settings/Settings';
+import { Route } from 'react-router-dom';
+import { RootStateType } from './redux/state';
 
 type PropsType = {
   appState: RootStateType;
@@ -32,10 +32,7 @@ const App = (props: PropsType) => {
             />
           )}
         />
-        <Route
-          path="/dialogs"
-          render={() => <Dialogs state={props.appState.dialogsPage} />}
-        />
+        <Route path="/dialogs" render={() => <Dialogs state={props.appState.dialogsPage} />} />
         <Route path="/news" component={News} />
         <Route path="/music" component={Music} />
         <Route path="/settings" component={Settings} />

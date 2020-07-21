@@ -1,8 +1,8 @@
-import React from "react";
-import classes from "./Profile.module.css";
-import MyPosts from "./MyPosts/MyPosts";
-import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import { ProfilePageType, PostType } from "../../redux/state";
+import React from 'react';
+import classes from './Profile.module.css';
+import MyPosts from './MyPosts/MyPosts';
+import ProfileInfo from './ProfileInfo/ProfileInfo';
+import { ProfilePageType } from '../../redux/state';
 
 type PropsType = {
   state: ProfilePageType;
@@ -16,9 +16,9 @@ const Profile = (props: PropsType) => {
       <ProfileInfo />
       <MyPosts
         posts={props.state.posts}
-        addPost={props.addPost}
         newPostText={props.state.newPostText}
         updateNewPostText={props.updateNewPostText}
+        addPost={props.addPost}
       />
     </div>
   );
