@@ -74,6 +74,6 @@ export const updateNewPostText = (newPostText: string) => {
   rerenderEntireTree(state);
 };
 
-export const subscribe = (observer: any) => {
+export const subscribe = (observer: (state: RootStateType) => void) => {
   rerenderEntireTree = observer;
 };
