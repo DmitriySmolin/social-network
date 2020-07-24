@@ -70,21 +70,23 @@ export const store = {
   _callSubscriber(state: RootStateType) {
     console.log('State was changed');
   },
-  addPost() {
-    let newPost = {
-      id: 3,
-      message: this._state.profilePage.newPostText,
-      likeCount: 0,
-    };
-    this._state.profilePage.posts.push(newPost);
-    this._state.profilePage.newPostText = '';
-    this._callSubscriber(this._state);
-  },
-  updateNewPostText(newPostText: string) {
-    this._state.profilePage.newPostText = newPostText;
-    this._callSubscriber(this._state);
-  },
   subscribe(observer: (state: RootStateType) => void) {
     this._callSubscriber = observer;
+  },
+
+  dispatch(action: any) {
+    if (action.type === 'ADD-POST') {
+      let newPost = {
+        id: 3,
+        message: this._state.profilePage.newPostText,
+        likeCount: 0,
+      };
+      this._state.profilePage.posts.push(newPost);
+      this._state.profilePage.newPostText = '';
+      this._callSubscriber(this._state);
+    } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
+      this._state.profilePage.newPostText = action.newPostText;
+      this._callSubscriber(this._state);
+    }
   },
 };

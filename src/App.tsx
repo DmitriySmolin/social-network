@@ -12,8 +12,7 @@ import { RootStateType } from './redux/state';
 
 type PropsType = {
   appState: RootStateType;
-  addPost: () => void;
-  updateNewPostText: (newPostText: string) => void;
+  dispatch: any;
 };
 
 const App = (props: PropsType) => {
@@ -24,13 +23,7 @@ const App = (props: PropsType) => {
       <div className="app-wrapper-content">
         <Route
           path="/profile"
-          render={() => (
-            <Profile
-              state={props.appState.profilePage}
-              addPost={props.addPost}
-              updateNewPostText={props.updateNewPostText}
-            />
-          )}
+          render={() => <Profile state={props.appState.profilePage} dispatch={props.dispatch} />}
         />
         <Route path="/dialogs" render={() => <Dialogs state={props.appState.dialogsPage} />} />
         <Route path="/news" component={News} />
