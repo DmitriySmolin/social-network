@@ -1,3 +1,6 @@
+const ADD_POST = 'ADD-POST';
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+
 export type PostType = {
   id: number;
   message: string;
@@ -33,20 +36,36 @@ export type StoreType = {
   _state: RootStateType;
   getState: () => RootStateType;
   _callSubscriber: (state: RootStateType) => void;
-  dispatch: (action: AddPostActionType | UpdateNewPostTextActionType) => void;
+  dispatch: (action: ActionsTypes) => void;
   subscribe: (observer: (state: RootStateType) => void) => void;
 };
 
-type AddPostActionType = {
-  type: 'ADD-POST';
+// type AddPostActionType = {
+//   type: 'ADD-POST';
+// };
+
+// type UpdateNewPostTextActionType = {
+//   type: 'UPDATE-NEW-POST-TEXT';
+//   newPostText: string;
+// };
+
+// export type ActionsTypes = AddPostActionType | UpdateNewPostTextActionType;
+
+// type AddPostActionType = ReturnType<typeof addPostActionCreator>;
+// type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostText>;
+
+export type ActionsTypes = ReturnType<typeof addPostActionCreator> | ReturnType<typeof updateNewPostText>;
+
+export const addPostActionCreator = () => {
+  return { type: ADD_POST } as const;
 };
 
-type UpdateNewPostTextActionType = {
-  type: 'UPDATE-NEW-POST-TEXT';
-  newPostText: string;
+export const updateNewPostText = (newPostText: string) => {
+  return {
+    type: UPDATE_NEW_POST_TEXT,
+    newPostText: newPostText,
+  } as const;
 };
-
-export type ActionsTypes = AddPostActionType | UpdateNewPostTextActionType;
 
 export const store: StoreType = {
   _state: {
