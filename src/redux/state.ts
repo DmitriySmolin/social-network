@@ -33,12 +33,22 @@ export type StoreType = {
   _state: RootStateType;
   getState: () => RootStateType;
   _callSubscriber: (state: RootStateType) => void;
-  addPost: () => void;
-  updateNewPostText: (newPostText: string) => void;
+  dispatch: (action: AddPostActionType | UpdateNewPostTextActionType) => void;
   subscribe: (observer: (state: RootStateType) => void) => void;
 };
 
-export const store = {
+type AddPostActionType = {
+  type: 'ADD-POST';
+};
+
+type UpdateNewPostTextActionType = {
+  type: 'UPDATE-NEW-POST-TEXT';
+  newPostText: string;
+};
+
+export type ActionsTypes = AddPostActionType | UpdateNewPostTextActionType;
+
+export const store: StoreType = {
   _state: {
     profilePage: {
       posts: [
@@ -74,7 +84,7 @@ export const store = {
     this._callSubscriber = observer;
   },
 
-  dispatch(action: any) {
+  dispatch(action) {
     if (action.type === 'ADD-POST') {
       let newPost = {
         id: 3,

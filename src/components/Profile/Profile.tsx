@@ -2,11 +2,11 @@ import React from 'react';
 import classes from './Profile.module.css';
 import MyPosts from './MyPosts/MyPosts';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
-import { ProfilePageType } from '../../redux/state';
+import { ProfilePageType, ActionsTypes } from '../../redux/state';
 
 type PropsType = {
   state: ProfilePageType;
-  dispatch: any;
+  dispatch: (action: ActionsTypes) => void;
 };
 
 const Profile = (props: PropsType) => {

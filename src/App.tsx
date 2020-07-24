@@ -8,14 +8,14 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import { Route } from 'react-router-dom';
-import { RootStateType } from './redux/state';
+import { RootStateType, ActionsTypes } from './redux/state';
 
 type PropsType = {
   appState: RootStateType;
-  dispatch: any;
+  dispatch: (action: ActionsTypes) => void;
 };
 
-const App = (props: PropsType) => {
+const App: React.FC<PropsType> = (props) => {
   return (
     <div className="app-wrapper">
       <Header />
