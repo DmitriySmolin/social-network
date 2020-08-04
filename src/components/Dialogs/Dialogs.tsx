@@ -2,14 +2,11 @@ import React from 'react';
 import classes from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
-import { DialogType, MessageType, ActionsTypes, updateNewMessageBodyCreator, sendMessageCreator } from '../../redux/state';
+import { ActionsTypes, DialogPageType } from '../../redux/state';
+import { sendMessageCreator, updateNewMessageBodyCreator } from '../../redux/dialogs-reducer';
 
 type PropsType = {
-  state: {
-    dialogs: Array<DialogType>;
-    messages: Array<MessageType>;
-    newMessageBody: string;
-  };
+  state: DialogPageType;
   dispatch: (action: ActionsTypes) => void;
 };
 
@@ -19,6 +16,7 @@ const Dialogs = (props: PropsType) => {
   let messagesElements = props.state.messages.map((m) => <Message key={m.id} message={m.message} />);
 
   const onSendMessageClick = () => {
+    debugger;
     props.dispatch(sendMessageCreator());
   };
 

@@ -9,5 +9,4 @@ const Message = (props: MessagePropsType) => {
   return <div className={classes.message}>{props.message}</div>;
 };
 
-
 export default Message;

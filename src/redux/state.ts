@@ -1,7 +1,6 @@
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE_NEW_MESSAGE_BODY';
-const SEND_MESSAGE = 'SEND_MESSAGE';
+import profileReducer, { addPostActionCreator, updateNewPostTextCreator } from './profile-reducer';
+import dialogsReducer, { updateNewMessageBodyCreator, sendMessageCreator } from './dialogs-reducer';
+import sidebarReducer from './sidebar-reducer';
 
 export type PostType = {
   id: number;
@@ -46,20 +45,6 @@ export type StoreType = {
   subscribe: (observer: (state: RootStateType) => void) => void;
 };
 
-// type AddPostActionType = {
-//   type: 'ADD-POST';
-// };
-
-// type UpdateNewPostTextActionType = {
-//   type: 'UPDATE-NEW-POST-TEXT';
-//   newPostText: string;
-// };
-
-// export type ActionsTypes = AddPostActionType | UpdateNewPostTextActionType;
-
-// type AddPostActionType = ReturnType<typeof addPostActionCreator>;
-// type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostText>;
-
 export type ActionsTypes =
   | ReturnType<typeof addPostActionCreator>
   | ReturnType<typeof updateNewPostTextCreator>
@@ -103,50 +88,9 @@ export const store: StoreType = {
     this._callSubscriber = observer;
   },
   dispatch(action) {
-    if (action.type === ADD_POST) {
-      let newPost = {
-        id: 3,
-        message: this._state.profilePage.newPostText,
-        likeCount: 0,
-      };
-      this._state.profilePage.posts.push(newPost);
-      this._state.profilePage.newPostText = '';
-      this._callSubscriber(this._state);
-    } else if (action.type === UPDATE_NEW_POST_TEXT) {
-      this._state.profilePage.newPostText = action.newPostText;
-      this._callSubscriber(this._state);
-    } else if (action.type === UPDATE_NEW_MESSAGE_BODY) {
-      this._state.dialogsPage.newMessageBody = action.newMessageBody;
-      this._callSubscriber(this._state);
-    } else if (action.type === SEND_MESSAGE) {
-      let body = this._state.dialogsPage.newMessageBody;
-      this._state.dialogsPage.messages.push({ id: 4, message: body });
-      this._state.dialogsPage.newMessageBody = '';
-      this._callSubscriber(this._state);
-    }
+    this._state.profilePage = profileReducer(this._state.profilePage, action);
+    this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+    this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+    this._callSubscriber(this._state);
   },
-};
-
-export const addPostActionCreator = () => {
-  return { type: ADD_POST } as const;
-};
-
-export const updateNewPostTextCreator = (newPostText: string) => {
-  return {
-    type: UPDATE_NEW_POST_TEXT,
-    newPostText: newPostText,
-  } as const;
-};
-
-export const updateNewMessageBodyCreator = (body: string) => {
-  return {
-    type: UPDATE_NEW_MESSAGE_BODY,
-    newMessageBody: body,
-  } as const;
-};
-
-export const sendMessageCreator = () => {
-  return {
-    type: SEND_MESSAGE,
-  } as const;
 };
