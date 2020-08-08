@@ -1,8 +1,11 @@
-import React from 'react';
-import classes from './MyPosts.module.css';
-import Post from '../Post/Post';
-import { PostType, ActionsTypes } from '../../../redux/state';
-import { addPostActionCreator, updateNewPostTextCreator } from '../../../redux/profile-reducer';
+import React from "react";
+import classes from "./MyPosts.module.css";
+import Post from "../Post/Post";
+import { PostType, ActionsTypes } from "../../../redux/redux-store";
+import {
+  addPostActionCreator,
+  updateNewPostTextCreator,
+} from "../../../redux/profile-reducer";
 
 type PropsType = {
   posts: Array<PostType>;
@@ -11,12 +14,13 @@ type PropsType = {
 };
 
 const MyPosts = (props: PropsType) => {
-  let postsElements = props.posts.map((p) => <Post key={p.id} message={p.message} likeCount={p.likeCount} />);
+  let postsElements = props.posts.map((p) => (
+    <Post key={p.id} message={p.message} likeCount={p.likeCount} />
+  ));
 
   let newPostElement = React.createRef<HTMLTextAreaElement>();
 
   const addPost = () => {
-    debugger;
     props.dispatch(addPostActionCreator());
   };
 
@@ -30,7 +34,12 @@ const MyPosts = (props: PropsType) => {
         <h3>My Posts</h3>
         <div>
           <div>
-            <textarea placeholder="Enter your post" ref={newPostElement} value={props.newPostText} onChange={onAddPostHandler}></textarea>
+            <textarea
+              placeholder="Enter your post"
+              ref={newPostElement}
+              value={props.newPostText}
+              onChange={onAddPostHandler}
+            ></textarea>
           </div>
           <div>
             <button onClick={addPost}>Add post</button>

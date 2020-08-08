@@ -1,9 +1,12 @@
-import React from 'react';
-import classes from './Dialogs.module.css';
-import DialogItem from './DialogItem/DialogItem';
-import Message from './Message/Message';
-import { ActionsTypes, DialogPageType } from '../../redux/state';
-import { sendMessageCreator, updateNewMessageBodyCreator } from '../../redux/dialogs-reducer';
+import React from "react";
+import classes from "./Dialogs.module.css";
+import DialogItem from "./DialogItem/DialogItem";
+import Message from "./Message/Message";
+import { ActionsTypes, DialogPageType } from "../../redux/redux-store";
+import {
+  sendMessageCreator,
+  updateNewMessageBodyCreator,
+} from "../../redux/dialogs-reducer";
 
 type PropsType = {
   state: DialogPageType;
@@ -11,9 +14,13 @@ type PropsType = {
 };
 
 const Dialogs = (props: PropsType) => {
-  let dialogsElements = props.state.dialogs.map((d) => <DialogItem key={d.id} id={d.id} name={d.name} />);
+  let dialogsElements = props.state.dialogs.map((d) => (
+    <DialogItem key={d.id} id={d.id} name={d.name} />
+  ));
 
-  let messagesElements = props.state.messages.map((m) => <Message key={m.id} message={m.message} />);
+  let messagesElements = props.state.messages.map((m) => (
+    <Message key={m.id} message={m.message} />
+  ));
 
   const onSendMessageClick = () => {
     debugger;
@@ -32,7 +39,11 @@ const Dialogs = (props: PropsType) => {
           {messagesElements}
           <div>
             <div>
-              <textarea value={props.state.newMessageBody} onChange={onNewMessageChange} placeholder="Enter your message"></textarea>
+              <textarea
+                value={props.state.newMessageBody}
+                onChange={onNewMessageChange}
+                placeholder="Enter your message"
+              ></textarea>
             </div>
             <div>
               <button onClick={onSendMessageClick}>Send</button>
