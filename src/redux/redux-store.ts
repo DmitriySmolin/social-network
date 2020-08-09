@@ -1,16 +1,8 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, Store } from "redux";
 
-import {
-  profileReducer,
-  addPostActionCreator,
-  updateNewPostTextCreator,
-} from "./profile-reducer";
+import { profileReducer, addPostActionCreator, updateNewPostTextCreator } from "./profile-reducer";
 
-import {
-  dialogsReducer,
-  updateNewMessageBodyCreator,
-  sendMessageCreator,
-} from "./dialogs-reducer";
+import { dialogsReducer, updateNewMessageBodyCreator, sendMessageCreator } from "./dialogs-reducer";
 
 import { sidebarReducer } from "./sidebar-reducer";
 
@@ -50,9 +42,8 @@ export type RootStateType = {
 };
 
 export type StoreType = {
-  _state: RootStateType;
   getState: () => RootStateType;
-  _callSubscriber: (state: RootStateType) => void;
+  callSubscriber: (state: any) => void;
   dispatch: (action: ActionsTypes) => void;
   subscribe: (observer: (state: RootStateType) => void) => void;
 };
@@ -69,4 +60,4 @@ let reducers = combineReducers({
   sidebar: sidebarReducer,
 });
 
-export let store = createStore(reducers);
+export let store: Store = createStore(reducers);

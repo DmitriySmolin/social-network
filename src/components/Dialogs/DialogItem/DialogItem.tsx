@@ -1,13 +1,13 @@
-import React from 'react';
-import classes from './../Dialogs.module.css';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import classes from "./../Dialogs.module.css";
+import { NavLink } from "react-router-dom";
 
 type DialogItemPropsType = {
   id: number;
   name: string;
 };
 
-const DialogItem = (props: DialogItemPropsType) => {
+const DialogItem: React.FC<DialogItemPropsType> = (props) => {
   let path = `/dialogs/${props.id}`;
   return (
     <div className={`${classes.dialog} ${classes.active}`}>

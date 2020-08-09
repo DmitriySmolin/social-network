@@ -1,31 +1,29 @@
 import React from "react";
 import classes from "./MyPosts.module.css";
 import Post from "../Post/Post";
-import { PostType, ActionsTypes } from "../../../redux/redux-store";
-import {
-  addPostActionCreator,
-  updateNewPostTextCreator,
-} from "../../../redux/profile-reducer";
+import { PostType } from "../../../redux/redux-store";
 
-type PropsType = {
+type MyPostsPropsType = {
   posts: Array<PostType>;
   newPostText: string;
-  dispatch: (action: ActionsTypes) => void;
+  addPost: () => void;
+  updateNewPosText: (text: string) => void;
 };
 
-const MyPosts = (props: PropsType) => {
+const MyPosts: React.FC<MyPostsPropsType> = (props) => {
   let postsElements = props.posts.map((p) => (
     <Post key={p.id} message={p.message} likeCount={p.likeCount} />
   ));
 
   let newPostElement = React.createRef<HTMLTextAreaElement>();
 
-  const addPost = () => {
-    props.dispatch(addPostActionCreator());
+  const onAddPost = () => {
+    props.addPost();
   };
 
-  const onAddPostHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.dispatch(updateNewPostTextCreator(e.currentTarget.value));
+  const onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    let text = e.currentTarget.value;
+    props.updateNewPosText(text);
   };
 
   return (
@@ -38,11 +36,11 @@ const MyPosts = (props: PropsType) => {
               placeholder="Enter your post"
               ref={newPostElement}
               value={props.newPostText}
-              onChange={onAddPostHandler}
+              onChange={onPostChange}
             ></textarea>
           </div>
           <div>
-            <button onClick={addPost}>Add post</button>
+            <button onClick={onAddPost}>Add post</button>
           </div>
         </div>
         <div className={classes.posts}>{postsElements}</div>
