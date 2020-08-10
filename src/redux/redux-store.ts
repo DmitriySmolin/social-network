@@ -41,12 +41,12 @@ export type RootStateType = {
   sidebar: SidebarType;
 };
 
-export type StoreType = {
-  getState: () => RootStateType;
-  callSubscriber: (state: any) => void;
-  dispatch: (action: ActionsTypes) => void;
-  subscribe: (observer: (state: RootStateType) => void) => void;
-};
+// export type StoreType = {
+//   getState: () => RootStateType;
+//   callSubscriber: (state: any) => void;
+//   dispatch: (action: ActionsTypes) => void;
+//   subscribe: (observer: (state: RootStateType) => void) => void;
+// };
 
 export type ActionsTypes =
   | ReturnType<typeof addPostActionCreator>
