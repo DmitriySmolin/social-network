@@ -5,6 +5,7 @@ import { profileReducer, addPostActionCreator, updateNewPostTextCreator } from "
 import { dialogsReducer, updateNewMessageBodyCreator, sendMessageCreator } from "./dialogs-reducer";
 
 import { sidebarReducer } from "./sidebar-reducer";
+import { followAC, unfollowAC, setUsersAC, userReducer } from "./users-reducer";
 
 export type PostType = {
   id: number;
@@ -20,6 +21,23 @@ export type DialogType = {
 export type MessageType = {
   id: number;
   message: string;
+};
+
+export type LocationType = {
+  country: string;
+  city: string;
+};
+
+export type UserType = {
+  id: number;
+  followed: boolean;
+  fullName: string;
+  status: string;
+  location: LocationType;
+};
+
+export type UserPageType = {
+  users: Array<UserType>;
 };
 
 export type ProfilePageType = {
@@ -52,12 +70,16 @@ export type ActionsTypes =
   | ReturnType<typeof addPostActionCreator>
   | ReturnType<typeof updateNewPostTextCreator>
   | ReturnType<typeof updateNewMessageBodyCreator>
-  | ReturnType<typeof sendMessageCreator>;
+  | ReturnType<typeof sendMessageCreator>
+  | ReturnType<typeof followAC>
+  | ReturnType<typeof unfollowAC>
+  | ReturnType<typeof setUsersAC>;
 
 let reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   sidebar: sidebarReducer,
+  users: userReducer,
 });
 
 export let store: Store = createStore(reducers);
