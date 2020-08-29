@@ -1,43 +1,14 @@
-import { ActionsTypes, ProfilePageType, UserType, UserPageType } from "./redux-store";
-import { stat } from "fs";
+import { ActionsTypes, UserType, UserPageType } from "./redux-store";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
 
 let initialState = {
-  users: [
-    {
-      id: 1,
-      photoUrl:
-        "https://avatars.mds.yandex.net/get-zen_doc/1710676/pub_5dc97f33e8c8e22cded837f7_5dc98a342538e85f0fa7f323/scale_1200",
-      followed: false,
-      fullName: "Dmitry",
-      status: "I am boss",
-      location: { country: "Belarus", city: "Minsk" },
-    },
-    {
-      id: 2,
-      photoUrl:
-        "https://avatars.mds.yandex.net/get-zen_doc/1710676/pub_5dc97f33e8c8e22cded837f7_5dc98a342538e85f0fa7f323/scale_1200",
-      followed: true,
-      fullName: "Sasha",
-      status: "I am boss too",
-      location: { country: "Russia", city: "Moscow" },
-    },
-    {
-      id: 3,
-      photoUrl:
-        "https://avatars.mds.yandex.net/get-zen_doc/1710676/pub_5dc97f33e8c8e22cded837f7_5dc98a342538e85f0fa7f323/scale_1200",
-      followed: false,
-      fullName: "Andrew",
-      status: "I am boss too",
-      location: { country: "Ukraine", city: "Kiev" },
-    },
-  ],
+  users: [],
 };
 
-export const userReducer = (state: UserPageType = initialState, action: any) => {
+export const userReducer = (state: UserPageType = initialState, action: ActionsTypes) => {
   switch (action.type) {
     case FOLLOW:
       return {
@@ -80,7 +51,7 @@ export const unfollowAC = (userId: number) => {
   } as const;
 };
 
-export const setUsersAC = (users: UserType) => {
+export const setUsersAC = (users: Array<UserType>) => {
   return {
     type: SET_USERS,
     users: users,

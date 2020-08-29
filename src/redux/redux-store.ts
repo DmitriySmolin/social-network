@@ -34,6 +34,7 @@ export type UserType = {
   fullName: string;
   status: string;
   location: LocationType;
+  photoUrl: string;
 };
 
 export type UserPageType = {
@@ -57,6 +58,7 @@ export type RootStateType = {
   profilePage: ProfilePageType;
   dialogsPage: DialogPageType;
   sidebar: SidebarType;
+  usersPage: UserPageType;
 };
 
 // export type StoreType = {
@@ -79,7 +81,7 @@ let reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   sidebar: sidebarReducer,
-  users: userReducer,
+  usersPage: userReducer,
 });
 
 export let store: Store = createStore(reducers);

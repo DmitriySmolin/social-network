@@ -1,22 +1,26 @@
 import React from "react";
 import classes from "./Users.module.css";
-
+import { UserType } from "../../redux/redux-store";
+import axios from "axios";
+import userPhoto from "../../assets/images/user.png";
 type UsersPropsType = {
   users: any;
   follow: (userId: number) => void;
   unfollow: (userId: number) => void;
-  setUsers: (users: any) => void;
+  setUsers: (users: Array<UserType>) => void;
 };
 const Users: React.FC<UsersPropsType> = (props) => {
   if (props.users.length === 0) {
-    props.setUsers(props.users);
+    axios.get("https://social-network.samuraijs.com/api/1.0/users").then((res) => {
+      props.setUsers(res.data.items);
+    });
   }
   return props.users.map((u: any) => {
     return (
       <div key={u.id}>
         <span>
           <div>
-            <img src={u.photoUrl} alt="" className={classes.photo} />
+            <img src={u.photos.small !== null ? u.photo.small : userPhoto} alt="" className={classes.photo} />
           </div>
           <div>
             {u.followed ? (
@@ -28,12 +32,12 @@ const Users: React.FC<UsersPropsType> = (props) => {
         </span>
         <span>
           <span>
-            <div>{u.fullName}</div>
+            <div>{u.name}</div>
             <div>{u.status}</div>
           </span>
           <span>
-            <div>{u.location.country}</div>
-            <div>{u.location.city}</div>
+            <div>{"u.location.country"}</div>
+            <div>{"u.location.city"}</div>
           </span>
         </span>
       </div>
