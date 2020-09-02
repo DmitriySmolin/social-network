@@ -5,21 +5,58 @@ import axios from "axios";
 import userPhoto from "../../assets/images/user.png";
 type UsersPropsType = {
   users: any;
+  totalUsersCount: number;
+  pageSize: number;
+  currentPage: number;
   follow: (userId: number) => void;
   unfollow: (userId: number) => void;
   setUsers: (users: Array<UserType>) => void;
+  setCurrentPage: (currentPage: number) => void;
+  setTotalUsersCount: (totalCount: number) => void;
 };
 
 class Users extends React.Component<UsersPropsType> {
   componentDidMount() {
-    axios.get("https://social-network.samuraijs.com/api/1.0/users").then((res) => {
-      this.props.setUsers(res.data.items);
-    });
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/users/?page=${this.props.currentPage}&count=${this.props.pageSize}`
+      )
+      .then((res) => {
+        this.props.setUsers(res.data.items);
+        if (res.data.totalCount >= 54) {
+          res.data.totalCount = 54;
+          this.props.setTotalUsersCount(res.data.totalCount);
+        }
+      });
   }
 
+  onSetCurrentPage = (pageNumber: number) => {
+    this.props.setCurrentPage(pageNumber);
+    axios
+      .get(`https://social-network.samuraijs.com/api/1.0/users/?page=${pageNumber}&count=${this.props.pageSize}`)
+      .then((res) => {
+        this.props.setUsers(res.data.items);
+      });
+  };
+
   render() {
+    let pageCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+    let pages = [];
+    for (let i = 1; i <= pageCount; i += 1) {
+      pages.push(i);
+    }
+
     return (
-      <div>
+      <div className={classes.Users}>
+        {pages.map((p) => (
+          <span
+            key={p}
+            className={this.props.currentPage === p ? classes.selectPage : ""}
+            onClick={() => this.onSetCurrentPage(p)}
+          >
+            {p}
+          </span>
+        ))}
         {this.props.users.map((u: any) => {
           return (
             <div key={u.id}>

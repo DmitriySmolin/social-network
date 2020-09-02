@@ -1,4 +1,13 @@
+.Users>span {
+    cursor: pointer;
+}
+
 .photo {
     width: 250px;
     height: 250px;
+}
+
+.selectPage {
+    font-weight: bold;
+    cursor: pointer;
 }
