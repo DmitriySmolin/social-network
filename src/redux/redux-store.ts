@@ -5,7 +5,15 @@ import { profileReducer, addPostActionCreator, updateNewPostTextCreator } from "
 import { dialogsReducer, updateNewMessageBodyCreator, sendMessageCreator } from "./dialogs-reducer";
 
 import { sidebarReducer } from "./sidebar-reducer";
-import { followAC, unfollowAC, setUsersAC, userReducer, setCurrentPageAC, setTotalUsersCountAC } from "./users-reducer";
+import {
+  followAC,
+  unfollowAC,
+  setUsersAC,
+  userReducer,
+  setCurrentPageAC,
+  setTotalUsersCountAC,
+  setIsFetchingAC,
+} from "./users-reducer";
 
 export type PostType = {
   id: number;
@@ -42,6 +50,7 @@ export type UserPageType = {
   pageSize: number;
   totalUsersCount: number;
   currentPage: number;
+  isFetching: boolean;
 };
 
 export type ProfilePageType = {
@@ -80,7 +89,8 @@ export type ActionsTypes =
   | ReturnType<typeof unfollowAC>
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof setCurrentPageAC>
-  | ReturnType<typeof setTotalUsersCountAC>;
+  | ReturnType<typeof setTotalUsersCountAC>
+  | ReturnType<typeof setIsFetchingAC>;
 
 let reducers = combineReducers({
   profilePage: profileReducer,
