@@ -83,27 +83,34 @@ const mapStateToProps = (state: RootStateType) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionsTypes>) => {
-  return {
-    follow: (userId: number) => {
-      dispatch(followAC(userId));
-    },
-    unfollow: (userId: number) => {
-      dispatch(unfollowAC(userId));
-    },
-    setUsers: (users: Array<UserType>) => {
-      dispatch(setUsersAC(users));
-    },
-    setCurrentPage: (pageNumber: number) => {
-      dispatch(setCurrentPageAC(pageNumber));
-    },
-    setTotalUsersCount: (totalCount: number) => {
-      dispatch(setTotalUsersCountAC(totalCount));
-    },
-    toggleIsFetching: (isFetching: boolean) => {
-      dispatch(setIsFetchingAC(isFetching));
-    },
-  };
-};
+// const mapDispatchToProps = (dispatch: Dispatch<ActionsTypes>) => {
+//   return {
+//     follow: (userId: number) => {
+//       dispatch(followAC(userId));
+//     },
+//     unfollow: (userId: number) => {
+//       dispatch(unfollowAC(userId));
+//     },
+//     setUsers: (users: Array<UserType>) => {
+//       dispatch(setUsersAC(users));
+//     },
+//     setCurrentPage: (pageNumber: number) => {
+//       dispatch(setCurrentPageAC(pageNumber));
+//     },
+//     setTotalUsersCount: (totalCount: number) => {
+//       dispatch(setTotalUsersCountAC(totalCount));
+//     },
+//     toggleIsFetching: (isFetching: boolean) => {
+//       dispatch(setIsFetchingAC(isFetching));
+//     },
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, {
+  follow: followAC,
+  unfollow: unfollowAC,
+  setUsers: setUsersAC,
+  setCurrentPage: setCurrentPageAC,
+  setTotalUsersCount: setTotalUsersCountAC,
+  toggleIsFetching: setIsFetchingAC,
+})(UsersContainer);
