@@ -2,9 +2,11 @@ import React from "react";
 import classes from "./Users.module.css";
 import userPhoto from "../../assets/images/user.png";
 import Prealoder from "../Preloader/Preloader";
+import { NavLink } from "react-router-dom";
+import { UserType } from "../../redux/redux-store";
 
 type UsersPropsType = {
-  users: any;
+  users: Array<UserType>;
   pageSize: number;
   totalUsersCount: number;
   currentPage: number;
@@ -38,7 +40,9 @@ const Users = (props: UsersPropsType) => {
             <div key={u.id}>
               <span>
                 <div>
-                  <img src={u.photos.small !== null ? u.photos.small : userPhoto} alt="" className={classes.photo} />
+                  <NavLink to={`profile/${u.id}`}>
+                    <img src={u.photos.small !== null ? u.photos.small : userPhoto} alt="" className={classes.photo} />
+                  </NavLink>
                 </div>
                 <div>
                   {u.followed ? (

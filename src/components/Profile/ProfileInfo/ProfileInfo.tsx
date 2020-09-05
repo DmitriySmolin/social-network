@@ -1,7 +1,14 @@
-import React from 'react';
-import classes from './ProfileInfo.module.css';
+import React from "react";
+import classes from "./ProfileInfo.module.css";
+import Prealoder from "../../Preloader/Preloader";
+import { ProfileType } from "../../../redux/redux-store";
 
-const ProfileInfo = () => {
+type ProfileInfoPropsType = {
+  profile: ProfileType | null;
+};
+
+const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
+  if (!props.profile) return <Prealoder />;
   return (
     <>
       <div>
@@ -10,7 +17,10 @@ const ProfileInfo = () => {
           alt=""
         />
       </div>
-      <div className={classes.description_block}>ava + description</div>
+      <div className={classes.description_block}>
+        <img src={props.profile.photos.large} alt="" />
+        ava + description
+      </div>
     </>
   );
 };

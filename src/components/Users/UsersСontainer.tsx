@@ -8,8 +8,7 @@ import {
   setTotalUsersCountAC,
   setIsFetchingAC,
 } from "../../redux/users-reducer";
-import { RootStateType, UserType, ActionsTypes } from "../../redux/redux-store";
-import { Dispatch } from "react";
+import { UserType, RootStateType } from "../../redux/redux-store";
 import axios from "axios";
 import Users from "./Users";
 

@@ -1,19 +1,8 @@
 import { createStore, combineReducers, Store } from "redux";
-
-import { profileReducer, addPostActionCreator, updateNewPostTextCreator } from "./profile-reducer";
-
-import { dialogsReducer, updateNewMessageBodyCreator, sendMessageCreator } from "./dialogs-reducer";
-
+import { profileReducer } from "./profile-reducer";
+import { dialogsReducer } from "./dialogs-reducer";
 import { sidebarReducer } from "./sidebar-reducer";
-import {
-  followAC,
-  unfollowAC,
-  setUsersAC,
-  userReducer,
-  setCurrentPageAC,
-  setTotalUsersCountAC,
-  setIsFetchingAC,
-} from "./users-reducer";
+import { userReducer } from "./users-reducer";
 
 export type PostType = {
   id: number;
@@ -53,9 +42,32 @@ export type UserPageType = {
   isFetching: boolean;
 };
 
+export type ProfileType = {
+  aboutMe: string;
+  contacts: {
+    facebook: string;
+    github: string;
+    instagram: string;
+    mainLink: null;
+    twitter: string;
+    vk: string;
+    website: null;
+    youtube: null;
+  };
+  fullName: string;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  photos: {
+    small: string;
+    large: string;
+  };
+  userId: number;
+};
+
 export type ProfilePageType = {
   posts: Array<PostType>;
   newPostText: string;
+  profile: ProfileType | null;
 };
 
 export type DialogPageType = {
@@ -66,37 +78,13 @@ export type DialogPageType = {
 
 export type SidebarType = {};
 
-export type RootStateType = {
-  profilePage: ProfilePageType;
-  dialogsPage: DialogPageType;
-  sidebar: SidebarType;
-  usersPage: UserPageType;
-};
-
-// export type StoreType = {
-//   getState: () => RootStateType;
-//   callSubscriber: (state: any) => void;
-//   dispatch: (action: ActionsTypes) => void;
-//   subscribe: (observer: (state: RootStateType) => void) => void;
-// };
-
-export type ActionsTypes =
-  | ReturnType<typeof addPostActionCreator>
-  | ReturnType<typeof updateNewPostTextCreator>
-  | ReturnType<typeof updateNewMessageBodyCreator>
-  | ReturnType<typeof sendMessageCreator>
-  | ReturnType<typeof followAC>
-  | ReturnType<typeof unfollowAC>
-  | ReturnType<typeof setUsersAC>
-  | ReturnType<typeof setCurrentPageAC>
-  | ReturnType<typeof setTotalUsersCountAC>
-  | ReturnType<typeof setIsFetchingAC>;
-
 let reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   sidebar: sidebarReducer,
   usersPage: userReducer,
 });
+
+export type RootStateType = ReturnType<typeof reducers>;
 
 export let store: Store = createStore(reducers);

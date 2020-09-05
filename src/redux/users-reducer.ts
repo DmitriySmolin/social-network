@@ -1,4 +1,4 @@
-import { ActionsTypes, UserType, UserPageType } from "./redux-store";
+import { UserType, UserPageType } from "./redux-store";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -15,7 +15,15 @@ let initialState = {
   isFetching: false,
 };
 
-export const userReducer = (state: UserPageType = initialState, action: ActionsTypes) => {
+type UsersActionTypes =
+  | ReturnType<typeof followAC>
+  | ReturnType<typeof unfollowAC>
+  | ReturnType<typeof setUsersAC>
+  | ReturnType<typeof setCurrentPageAC>
+  | ReturnType<typeof setTotalUsersCountAC>
+  | ReturnType<typeof setIsFetchingAC>;
+
+export const userReducer = (state: UserPageType = initialState, action: UsersActionTypes) => {
   switch (action.type) {
     case FOLLOW:
       return {

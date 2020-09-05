@@ -1,4 +1,4 @@
-import { updateNewMessageBodyCreator, dialogsReducer, sendMessageCreator } from "./dialogs-reducer";
+import { dialogsReducer, sendMessageAC, updateNewMessageBodyAC } from "./dialogs-reducer";
 
 test("correct dialogsPage update new message body", () => {
   let startState = {
@@ -19,7 +19,7 @@ test("correct dialogsPage update new message body", () => {
   };
   let body = "new message body";
 
-  const endState = dialogsReducer(startState, updateNewMessageBodyCreator(body));
+  const endState = dialogsReducer(startState, updateNewMessageBodyAC(body));
 
   expect(endState.newMessageBody).toBe("new message body");
   // expect(endState[0].id).toBe(todolistId2);
@@ -43,7 +43,7 @@ test("correct dialogsPage send message", () => {
     newMessageBody: "new message",
   };
 
-  const endState = dialogsReducer(startState, sendMessageCreator());
+  const endState = dialogsReducer(startState, sendMessageAC());
 
   expect(endState.messages.length).toBe(4);
   expect(endState.messages[3].message).toBe("new message");
