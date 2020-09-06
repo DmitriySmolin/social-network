@@ -3,6 +3,7 @@ import { profileReducer } from "./profile-reducer";
 import { dialogsReducer } from "./dialogs-reducer";
 import { sidebarReducer } from "./sidebar-reducer";
 import { userReducer } from "./users-reducer";
+import { authReducer } from "./auth-reducer";
 
 export type PostType = {
   id: number;
@@ -64,6 +65,17 @@ export type ProfileType = {
   userId: number;
 };
 
+export type authStateType = {
+  auth: authType;
+};
+
+export type authType = {
+  userId: number | null;
+  email: string | null;
+  login: string | null;
+  isAuth: boolean;
+};
+
 export type ProfilePageType = {
   posts: Array<PostType>;
   newPostText: string;
@@ -83,6 +95,7 @@ let reducers = combineReducers({
   dialogsPage: dialogsReducer,
   sidebar: sidebarReducer,
   usersPage: userReducer,
+  auth: authReducer,
 });
 
 export type RootStateType = ReturnType<typeof reducers>;
