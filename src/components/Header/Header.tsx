@@ -7,7 +7,6 @@ type HeaderPropsType = {
 };
 
 const Header: React.FC<HeaderPropsType> = (props) => {
-  console.log(props);
   return (
     <header className={classes.header}>
       <img src="https://www.quizony.com/company-name-generator/company-name-generator-small.jpg" alt="" />
