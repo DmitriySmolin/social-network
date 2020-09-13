@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import { RootStateType, ProfileType } from "../../redux/redux-store";
 import { connect } from "react-redux";
 import { setUserProfileAC } from "../../redux/profile-reducer";
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { userAPI } from "../api/api";
 
 type ProfileContainerType = {
@@ -12,9 +12,9 @@ type ProfileContainerType = {
   setUserProfile: (profile: ProfileType) => void;
 };
 
-class ProfileContainer extends React.Component<any> {
+class ProfileContainer extends React.Component<ProfileContainerType & RouteComponentProps<{ userId: string }>> {
   componentDidMount() {
-    let userId = this.props.match.params.userId;
+    let userId = +this.props.match.params.userId;
     if (!userId) userId = 2;
     userAPI.getProfile(userId).then((data) => {
       this.props.setUserProfile(data);

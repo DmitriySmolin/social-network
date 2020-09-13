@@ -12,12 +12,14 @@ type UsersPropsType = {
   totalUsersCount: number;
   currentPage: number;
   isFetching: boolean;
+  isArrayFollowing: Array<number>;
   follow: (userId: number) => void;
   unfollow: (userId: number) => void;
   onSetCurrentPage: (pageNumber: number) => void;
+  toggleIsFollowing: (isFollowing: boolean, userId: number) => void;
 };
 
-const Users = (props: UsersPropsType) => {
+const Users: React.FC<UsersPropsType> = (props) => {
   let pageCount = Math.ceil(props.totalUsersCount / props.pageSize);
   let pages = [];
   for (let i = 1; i <= pageCount; i += 1) {
@@ -25,14 +27,20 @@ const Users = (props: UsersPropsType) => {
   }
 
   const unfollowClick = (userId: number) => {
+    props.toggleIsFollowing(true, userId);
+
     userAPI.setUnfollow(userId).then((data) => {
       if (data.resultCode === 0) props.unfollow(userId);
+      props.toggleIsFollowing(false, userId);
     });
   };
 
   const followClick = (userId: number) => {
+    props.toggleIsFollowing(true, userId);
+
     userAPI.setFollow(userId).then((data) => {
       if (data.resultCode === 0) props.follow(userId);
+      props.toggleIsFollowing(false, userId);
     });
   };
 
@@ -49,7 +57,7 @@ const Users = (props: UsersPropsType) => {
             {p}
           </span>
         ))}
-        {props.users.map((u: any) => {
+        {props.users.map((u) => {
           return (
             <div key={u.id}>
               <span>
@@ -60,9 +68,19 @@ const Users = (props: UsersPropsType) => {
                 </div>
                 <div>
                   {u.followed ? (
-                    <button onClick={() => unfollowClick(u.id)}>UnFollow</button>
+                    <button
+                      onClick={() => unfollowClick(u.id)}
+                      disabled={props.isArrayFollowing.some((userId: number) => userId === u.id)}
+                    >
+                      UnFollow
+                    </button>
                   ) : (
-                    <button onClick={() => followClick(u.id)}>Follow</button>
+                    <button
+                      onClick={() => followClick(u.id)}
+                      disabled={props.isArrayFollowing.some((userId: number) => userId === u.id)}
+                    >
+                      Follow
+                    </button>
                   )}
                 </div>
               </span>

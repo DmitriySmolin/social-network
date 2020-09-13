@@ -5,14 +5,16 @@ const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
-const SET_IS_FETCHING = "SET_IS_FETCHING";
+const TOGGLE_IS_FETCHING = "SET_IS_FETCHING";
+const TOGGLE_IS_FOLLOWING = "SET_IS_FOLLOWING";
 
 let initialState = {
   users: [],
   pageSize: 5,
   totalUsersCount: 0,
   currentPage: 1,
-  isFetching: false,
+  isFetching: true,
+  isArrayFollowing: [] as Array<number>,
 };
 
 type UsersActionTypes =
@@ -21,9 +23,10 @@ type UsersActionTypes =
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof setCurrentPageAC>
   | ReturnType<typeof setTotalUsersCountAC>
-  | ReturnType<typeof setIsFetchingAC>;
+  | ReturnType<typeof toggleIsFetchingAC>
+  | ReturnType<typeof toggleIsFollowingAC>;
 
-export const userReducer = (state: UserPageType = initialState, action: UsersActionTypes) => {
+export const userReducer = (state: UserPageType = initialState, action: UsersActionTypes): UserPageType => {
   switch (action.type) {
     case FOLLOW:
       return {
@@ -60,10 +63,17 @@ export const userReducer = (state: UserPageType = initialState, action: UsersAct
         ...state,
         totalUsersCount: action.totalCount,
       };
-    case SET_IS_FETCHING:
+    case TOGGLE_IS_FETCHING:
       return {
         ...state,
         isFetching: action.isFetching,
+      };
+    case TOGGLE_IS_FOLLOWING:
+      return {
+        ...state,
+        isArrayFollowing: action.isFollowing
+          ? [...state.isArrayFollowing, action.userId]
+          : state.isArrayFollowing.filter((userId: number) => userId !== action.userId),
       };
     default:
       return state;
@@ -102,9 +112,17 @@ export const setTotalUsersCountAC = (totalCount: number) => {
   } as const;
 };
 
-export const setIsFetchingAC = (isFetching: boolean) => {
+export const toggleIsFetchingAC = (isFetching: boolean) => {
   return {
-    type: SET_IS_FETCHING,
+    type: TOGGLE_IS_FETCHING,
     isFetching: isFetching,
+  } as const;
+};
+
+export const toggleIsFollowingAC = (isFollowing: boolean, userId: number) => {
+  return {
+    type: TOGGLE_IS_FOLLOWING,
+    isFollowing: isFollowing,
+    userId: userId,
   } as const;
 };

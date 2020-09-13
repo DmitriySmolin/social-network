@@ -32,7 +32,10 @@ export type UserType = {
   name: string;
   status: string;
   location: LocationType;
-  photos: string;
+  photos: {
+    small: string;
+    large: string;
+  };
 };
 
 export type UserPageType = {
@@ -41,6 +44,7 @@ export type UserPageType = {
   totalUsersCount: number;
   currentPage: number;
   isFetching: boolean;
+  isArrayFollowing: Array<number>;
 };
 
 export type ProfileType = {
