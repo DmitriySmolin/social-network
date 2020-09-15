@@ -1,10 +1,10 @@
-import { createStore, combineReducers, Store } from "redux";
+import { createStore, combineReducers, Store, applyMiddleware } from "redux";
 import { profileReducer } from "./profile-reducer";
 import { dialogsReducer } from "./dialogs-reducer";
 import { sidebarReducer } from "./sidebar-reducer";
 import { userReducer } from "./users-reducer";
 import { authReducer } from "./auth-reducer";
-
+import thunkMiddleware from "redux-thunk";
 export type PostType = {
   id: number;
   message: string;
@@ -104,4 +104,4 @@ let reducers = combineReducers({
 
 export type RootStateType = ReturnType<typeof reducers>;
 
-export let store: Store = createStore(reducers);
+export let store: Store = createStore(reducers, applyMiddleware(thunkMiddleware));

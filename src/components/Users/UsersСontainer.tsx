@@ -1,56 +1,41 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  followAC,
-  unfollowAC,
-  setUsersAC,
   setCurrentPageAC,
-  setTotalUsersCountAC,
-  toggleIsFetchingAC,
   toggleIsFollowingAC,
+  getUsersThunkAC,
+  followThunkAC,
+  unfollowThunkAC,
+  followSuccesAC,
 } from "../../redux/users-reducer";
 import { UserType, RootStateType } from "../../redux/redux-store";
-
 import Users from "./Users";
-import { userAPI } from "../api/api";
 
-type UsersCotainerPropsType = {
+type mapStateToPropsType = {
   users: Array<UserType>;
   totalUsersCount: number;
   pageSize: number;
   currentPage: number;
   isFetching: boolean;
   isArrayFollowing: Array<number>;
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
-  setUsers: (users: Array<UserType>) => void;
-  setCurrentPage: (currentPage: number) => void;
-  setTotalUsersCount: (totalCount: number) => void;
-  toggleIsFetching: (isFetching: boolean) => void;
-  toggleIsFollowing: (isFollowing: boolean, userId: number) => void;
 };
 
-class UsersContainer extends React.Component<UsersCotainerPropsType> {
-  componentDidMount() {
-    this.props.toggleIsFetching(true);
+type mapDispatchToPropsType = {
+  follow: (userId: number) => void;
+  unfollow: (userId: number) => void;
+  setCurrentPage: (currentPage: number) => void;
+  getUsersThunk: (currentPage: number, pageSize: number) => void;
+  followThunk: (userId: number) => void;
+  unfollowThunk: (userId: number) => void;
+};
 
-    userAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data) => {
-      this.props.setUsers(data.items);
-      if (data.totalCount >= 54) {
-        data.totalCount = 54;
-        this.props.setTotalUsersCount(data.totalCount);
-        this.props.toggleIsFetching(false);
-      }
-    });
+class UsersContainer extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
+  componentDidMount() {
+    this.props.getUsersThunk(this.props.currentPage, this.props.pageSize);
   }
 
   onSetCurrentPage = (pageNumber: number) => {
-    this.props.toggleIsFetching(true);
-    this.props.setCurrentPage(pageNumber);
-    userAPI.getUsers(pageNumber, this.props.pageSize).then((data) => {
-      this.props.setUsers(data.items);
-      this.props.toggleIsFetching(false);
-    });
+    this.props.getUsersThunk(pageNumber, this.props.pageSize);
   };
 
   render() {
@@ -61,11 +46,12 @@ class UsersContainer extends React.Component<UsersCotainerPropsType> {
         totalUsersCount={this.props.totalUsersCount}
         currentPage={this.props.currentPage}
         isFetching={this.props.isFetching}
-        follow={this.props.follow}
-        unfollow={this.props.unfollow}
+        followSuccess={this.props.follow}
+        unfollowSuccess={this.props.unfollow}
         onSetCurrentPage={this.onSetCurrentPage}
-        toggleIsFollowing={this.props.toggleIsFollowing}
         isArrayFollowing={this.props.isArrayFollowing}
+        followThunk={this.props.followThunk}
+        unfollowThunk={this.props.unfollowThunk}
       />
     );
   }
@@ -82,35 +68,12 @@ const mapStateToProps = (state: RootStateType) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch: Dispatch<ActionsTypes>) => {
-//   return {
-//     follow: (userId: number) => {
-//       dispatch(followAC(userId));
-//     },
-//     unfollow: (userId: number) => {
-//       dispatch(unfollowAC(userId));
-//     },
-//     setUsers: (users: Array<UserType>) => {
-//       dispatch(setUsersAC(users));
-//     },
-//     setCurrentPage: (pageNumber: number) => {
-//       dispatch(setCurrentPageAC(pageNumber));
-//     },
-//     setTotalUsersCount: (totalCount: number) => {
-//       dispatch(setTotalUsersCountAC(totalCount));
-//     },
-//     toggleIsFetching: (isFetching: boolean) => {
-//       dispatch(setIsFetchingAC(isFetching));
-//     },
-//   };
-// };
-
 export default connect(mapStateToProps, {
-  follow: followAC,
-  unfollow: unfollowAC,
-  setUsers: setUsersAC,
+  follow: followSuccesAC,
+  unfollow: followSuccesAC,
   setCurrentPage: setCurrentPageAC,
-  setTotalUsersCount: setTotalUsersCountAC,
-  toggleIsFetching: toggleIsFetchingAC,
   toggleIsFollowing: toggleIsFollowingAC,
+  getUsersThunk: getUsersThunkAC,
+  followThunk: followThunkAC,
+  unfollowThunk: unfollowThunkAC,
 })(UsersContainer);

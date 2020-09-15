@@ -1,4 +1,7 @@
-import { ProfilePageType, ProfileType } from "./redux-store";
+import { Action, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { userAPI } from "../components/api/api";
+import { ProfilePageType, ProfileType, RootStateType } from "./redux-store";
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
@@ -64,4 +67,12 @@ export const setUserProfileAC = (profile: ProfileType) => {
     type: SET_USER_PROFILE,
     profile: profile,
   } as const;
+};
+
+export const getProfileThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => {
+  return (dispatch: Dispatch<ProfileActionsTypes>) => {
+    userAPI.getProfile(userId).then((data) => {
+      dispatch(setUserProfileAC(data));
+    });
+  };
 };

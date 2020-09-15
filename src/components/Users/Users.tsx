@@ -4,7 +4,6 @@ import userPhoto from "../../assets/images/user.png";
 import Prealoder from "../Preloader/Preloader";
 import { NavLink } from "react-router-dom";
 import { UserType } from "../../redux/redux-store";
-import { userAPI } from "../api/api";
 
 type UsersPropsType = {
   users: Array<UserType>;
@@ -13,10 +12,11 @@ type UsersPropsType = {
   currentPage: number;
   isFetching: boolean;
   isArrayFollowing: Array<number>;
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
+  followSuccess: (userId: number) => void;
+  unfollowSuccess: (userId: number) => void;
   onSetCurrentPage: (pageNumber: number) => void;
-  toggleIsFollowing: (isFollowing: boolean, userId: number) => void;
+  followThunk: (userId: number) => void;
+  unfollowThunk: (userId: number) => void;
 };
 
 const Users: React.FC<UsersPropsType> = (props) => {
@@ -25,24 +25,6 @@ const Users: React.FC<UsersPropsType> = (props) => {
   for (let i = 1; i <= pageCount; i += 1) {
     pages.push(i);
   }
-
-  const unfollowClick = (userId: number) => {
-    props.toggleIsFollowing(true, userId);
-
-    userAPI.setUnfollow(userId).then((data) => {
-      if (data.resultCode === 0) props.unfollow(userId);
-      props.toggleIsFollowing(false, userId);
-    });
-  };
-
-  const followClick = (userId: number) => {
-    props.toggleIsFollowing(true, userId);
-
-    userAPI.setFollow(userId).then((data) => {
-      if (data.resultCode === 0) props.follow(userId);
-      props.toggleIsFollowing(false, userId);
-    });
-  };
 
   return (
     <>
@@ -69,14 +51,14 @@ const Users: React.FC<UsersPropsType> = (props) => {
                 <div>
                   {u.followed ? (
                     <button
-                      onClick={() => unfollowClick(u.id)}
+                      onClick={() => props.unfollowThunk(u.id)}
                       disabled={props.isArrayFollowing.some((userId: number) => userId === u.id)}
                     >
                       UnFollow
                     </button>
                   ) : (
                     <button
-                      onClick={() => followClick(u.id)}
+                      onClick={() => props.followThunk(u.id)}
                       disabled={props.isArrayFollowing.some((userId: number) => userId === u.id)}
                     >
                       Follow
