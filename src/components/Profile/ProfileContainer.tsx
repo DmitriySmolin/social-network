@@ -21,9 +21,6 @@ class ProfileContainer extends React.Component<
   componentDidMount() {
     let userId = +this.props.match.params.userId;
     if (!userId) userId = 2;
-    // userAPI.getProfile(userId).then((data) => {
-    //   this.props.setUserProfile(data);
-    // });
     this.props.getProfileThunk(userId);
   }
   render() {

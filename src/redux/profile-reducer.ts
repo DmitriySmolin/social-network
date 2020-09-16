@@ -69,10 +69,10 @@ export const setUserProfileAC = (profile: ProfileType) => {
   } as const;
 };
 
-export const getProfileThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => {
-  return (dispatch: Dispatch<ProfileActionsTypes>) => {
-    userAPI.getProfile(userId).then((data) => {
-      dispatch(setUserProfileAC(data));
-    });
-  };
+export const getProfileThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+  dispatch: Dispatch<ProfileActionsTypes>
+) => {
+  userAPI.getProfile(userId).then((data) => {
+    dispatch(setUserProfileAC(data));
+  });
 };

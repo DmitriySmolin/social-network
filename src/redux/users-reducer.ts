@@ -131,39 +131,38 @@ export const toggleIsFollowingAC = (isFollowing: boolean, userId: number) => {
   } as const;
 };
 
-export const getUsersThunkAC = (currentPage: number, pageSize: number) => {
-  return (dispatch: Dispatch<UsersActionTypes>) => {
-    dispatch(toggleIsFetchingAC(true));
+export const getUsersThunkAC = (currentPage: number, pageSize: number) => (dispatch: Dispatch<UsersActionTypes>) => {
+  dispatch(toggleIsFetchingAC(true));
 
-    userAPI.getUsers(currentPage, pageSize).then((data) => {
-      dispatch(setUsersAC(data.items));
-      if (data.totalCount >= 54) {
-        data.totalCount = 54;
-        dispatch(setTotalUsersCountAC(data.totalCount));
-        dispatch(toggleIsFetchingAC(false));
-      }
-    });
-  };
+  userAPI.getUsers(currentPage, pageSize).then((data) => {
+    dispatch(setUsersAC(data.items));
+    if (data.totalCount >= 54) {
+      data.totalCount = 54;
+      dispatch(setTotalUsersCountAC(data.totalCount));
+      dispatch(toggleIsFetchingAC(false));
+      dispatch(setCurrentPageAC(currentPage));
+    }
+  });
 };
 
-export const followThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => {
-  return (dispatch: Dispatch<UsersActionTypes>) => {
-    dispatch(toggleIsFollowingAC(true, userId));
+export const followThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+  dispatch: Dispatch<UsersActionTypes>
+) => {
+  dispatch(toggleIsFollowingAC(true, userId));
 
-    userAPI.setFollow(userId).then((data) => {
-      if (data.resultCode === 0) dispatch(followSuccesAC(userId));
-      dispatch(toggleIsFollowingAC(false, userId));
-    });
-  };
+  userAPI.setFollow(userId).then((data) => {
+    if (data.resultCode === 0) dispatch(followSuccesAC(userId));
+    dispatch(toggleIsFollowingAC(false, userId));
+  });
 };
 
-export const unfollowThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => {
-  return (dispatch: Dispatch<UsersActionTypes>) => {
-    dispatch(toggleIsFollowingAC(true, userId));
+export const unfollowThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+  dispatch: Dispatch<UsersActionTypes>
+) => {
+  dispatch(toggleIsFollowingAC(true, userId));
 
-    userAPI.setUnfollow(userId).then((data) => {
-      if (data.resultCode === 0) dispatch(unfollowSuccesAC(userId));
-      dispatch(toggleIsFollowingAC(false, userId));
-    });
-  };
+  userAPI.setUnfollow(userId).then((data) => {
+    if (data.resultCode === 0) dispatch(unfollowSuccesAC(userId));
+    dispatch(toggleIsFollowingAC(false, userId));
+  });
 };
