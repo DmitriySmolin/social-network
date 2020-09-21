@@ -3,21 +3,19 @@ import classes from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import { DialogPageType } from "../../redux/redux-store";
+import { Redirect } from "react-router-dom";
 
 type DialogsPropsType = {
   dialogsPage: DialogPageType;
   sendMessage: () => void;
   updateNewMessageBody: (body: string) => void;
+  isAuth: boolean;
 };
 
 const Dialogs: React.FC<DialogsPropsType> = (props) => {
-  let dialogsElements = props.dialogsPage.dialogs.map((d) => (
-    <DialogItem key={d.id} id={d.id} name={d.name} />
-  ));
+  let dialogsElements = props.dialogsPage.dialogs.map((d) => <DialogItem key={d.id} id={d.id} name={d.name} />);
 
-  let messagesElements = props.dialogsPage.messages.map((m) => (
-    <Message key={m.id} message={m.message} />
-  ));
+  let messagesElements = props.dialogsPage.messages.map((m) => <Message key={m.id} message={m.message} />);
 
   const onSendMessageClick = () => {
     props.sendMessage();

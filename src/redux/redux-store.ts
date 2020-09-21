@@ -69,11 +69,11 @@ export type ProfileType = {
   userId: number;
 };
 
-export type authStateType = {
-  auth: authType;
+export type AuthStateType = {
+  auth: any;
 };
 
-export type authType = {
+export type AuthType = {
   userId: number | null;
   email: string | null;
   login: string | null;

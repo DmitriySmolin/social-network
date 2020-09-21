@@ -5,9 +5,11 @@ import { RootStateType, ProfileType } from "../../redux/redux-store";
 import { connect } from "react-redux";
 import { getProfileThunkAC, setUserProfileAC } from "../../redux/profile-reducer";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withAuthRedirect } from "../hoc/withAuthRedirect";
 
 type mapStateToPropsType = {
   profile: ProfileType | null;
+  isAuth: boolean;
 };
 
 type mapDispatchToPropsType = {
@@ -28,11 +30,13 @@ class ProfileContainer extends React.Component<
   }
 }
 
-const mapStateToProps = (state: RootStateType) => {
+const mapStateToProps = (state: any) => {
   return { profile: state.profilePage.profile };
 };
 
-const WithUrlDataContainer = withRouter(ProfileContainer);
+const AuthRedirectComponent: any = withAuthRedirect(ProfileContainer);
+
+const WithUrlDataContainer = withRouter<any, any>(AuthRedirectComponent);
 
 export default connect(mapStateToProps, {
   setUserProfile: setUserProfileAC,

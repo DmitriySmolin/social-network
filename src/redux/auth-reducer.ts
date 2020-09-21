@@ -1,7 +1,7 @@
 import { Action, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { userAPI } from "../components/api/api";
-import { authType, RootStateType } from "./redux-store";
+import { AuthStateType, AuthType, RootStateType } from "./redux-store";
 
 const SET_USER_DATA = "SET_USER_DATA";
 
@@ -12,9 +12,9 @@ let initialState = {
   isAuth: false,
 };
 
-export type authActionTypes = ReturnType<typeof setAuthUserDataAC>;
+export type AuthActionTypes = ReturnType<typeof setAuthUserDataAC>;
 
-export const authReducer = (state: authType = initialState, action: authActionTypes) => {
+export const authReducer = (state: any = initialState, action: AuthActionTypes) => {
   switch (action.type) {
     case SET_USER_DATA: {
       return {
@@ -34,7 +34,7 @@ export const setAuthUserDataAC = (userId: number | null, email: string | null, l
 };
 
 export const authThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => (
-  dispatch: Dispatch<authActionTypes>
+  dispatch: Dispatch<AuthActionTypes>
 ) => {
   userAPI.auth().then((data) => {
     const { id, email, login } = data.data;

@@ -1,8 +1,9 @@
 import { DialogsActionsTypes, sendMessageAC, updateNewMessageBodyAC } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
-import { Dispatch } from "react";
+// import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { RootStateType } from "../../redux/redux-store";
+import { withAuthRedirect } from "../hoc/withAuthRedirect";
 
 let mapStateToProps = (state: RootStateType) => {
   return {
@@ -10,7 +11,7 @@ let mapStateToProps = (state: RootStateType) => {
   };
 };
 
-let mapDispatchToProps = (dispatch: Dispatch<DialogsActionsTypes>) => {
+let mapDispatchToProps = (dispatch: any) => {
   return {
     updateNewMessageBody: (body: string) => {
       let action = updateNewMessageBodyAC(body);
@@ -22,6 +23,8 @@ let mapDispatchToProps = (dispatch: Dispatch<DialogsActionsTypes>) => {
   };
 };
 
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+const AuthRedirectComponent: any = withAuthRedirect(Dialogs);
+
+const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
 
 export default DialogsContainer;
