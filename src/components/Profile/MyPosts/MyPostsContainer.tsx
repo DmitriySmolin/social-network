@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { RootStateType } from "../../../redux/redux-store";
 import { addPostAC, updateNewPostTextAC, ProfileActionsTypes } from "../../../redux/profile-reducer";
 import { Dispatch } from "react";
+import { compose } from "redux";
 
 const mapStateToProps = (state: RootStateType) => {
   return {
@@ -23,6 +24,8 @@ const mapDispatchToProps = (dispatch: Dispatch<ProfileActionsTypes>) => {
   };
 };
 
-let MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(MyPosts);
 
-export default MyPostsContainer;
+// let MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+
+// export default MyPostsContainer;
