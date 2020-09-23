@@ -9,8 +9,6 @@ const mapStateToPropsForDirect = (state: any) => {
 };
 
 export const withAuthRedirect = (Component: any) => {
-  debugger;
-
   const RedirectComponent = (props: any) => {
     if (!props.isAuth) return <Redirect to="/login" />;
     return <Component {...props} />;

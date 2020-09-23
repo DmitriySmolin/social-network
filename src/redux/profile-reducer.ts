@@ -1,11 +1,12 @@
 import { Action, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { userAPI } from "../components/api/api";
+import { profileAPI, userAPI } from "../components/api/api";
 import { ProfilePageType, ProfileType, RootStateType } from "./redux-store";
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
+const SET_STATUS = "SET_STATUS";
 
 let initialState = {
   posts: [
@@ -14,12 +15,14 @@ let initialState = {
   ],
   newPostText: "",
   profile: null,
+  status: "",
 };
 
 export type ProfileActionsTypes =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof updateNewPostTextAC>
-  | ReturnType<typeof setUserProfileAC>;
+  | ReturnType<typeof setUserProfileAC>
+  | ReturnType<typeof setStatusAC>;
 
 export const profileReducer = (state: ProfilePageType = initialState, action: ProfileActionsTypes) => {
   switch (action.type) {
@@ -46,6 +49,11 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
         ...state,
         profile: action.profile,
       };
+    case SET_STATUS:
+      return {
+        ...state,
+        status: action.status,
+      };
     default:
       return state;
   }
@@ -69,10 +77,36 @@ export const setUserProfileAC = (profile: ProfileType) => {
   } as const;
 };
 
+export const setStatusAC = (status: string) => {
+  debugger;
+  return {
+    type: SET_STATUS,
+    status: status,
+  } as const;
+};
+
 export const getProfileThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
   dispatch: Dispatch<ProfileActionsTypes>
 ) => {
   userAPI.getProfile(userId).then((data) => {
     dispatch(setUserProfileAC(data));
+  });
+};
+
+export const getStatusThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+  dispatch: Dispatch<ProfileActionsTypes>
+) => {
+  profileAPI.getStatus(userId).then((data) => {
+    dispatch(setStatusAC(data));
+  });
+};
+
+export const updateStatusThunkAC = (status: string): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+  dispatch: Dispatch<ProfileActionsTypes>
+) => {
+  profileAPI.updateStatus(status).then((data) => {
+    if (data.resultCode === 0) {
+      dispatch(setStatusAC(status));
+    }
   });
 };

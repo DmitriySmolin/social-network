@@ -1,6 +1,6 @@
 import { Action, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { userAPI } from "../components/api/api";
+import { authAPI } from "../components/api/api";
 import { AuthStateType, AuthType, RootStateType } from "./redux-store";
 
 const SET_USER_DATA = "SET_USER_DATA";
@@ -36,7 +36,7 @@ export const setAuthUserDataAC = (userId: number | null, email: string | null, l
 export const authThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => (
   dispatch: Dispatch<AuthActionTypes>
 ) => {
-  userAPI.auth().then((data) => {
+  authAPI.auth().then((data) => {
     const { id, email, login } = data.data;
     if (data.resultCode === 0) dispatch(setAuthUserDataAC(id, email, login));
   });
