@@ -136,12 +136,9 @@ export const getUsersThunkAC = (currentPage: number, pageSize: number) => (dispa
 
   userAPI.getUsers(currentPage, pageSize).then((data) => {
     dispatch(setUsersAC(data.items));
-    if (data.totalCount >= 54) {
-      data.totalCount = 54;
-      dispatch(setTotalUsersCountAC(data.totalCount));
-      dispatch(toggleIsFetchingAC(false));
-      dispatch(setCurrentPageAC(currentPage));
-    }
+    dispatch(setTotalUsersCountAC(data.totalCount));
+    dispatch(toggleIsFetchingAC(false));
+    dispatch(setCurrentPageAC(currentPage));
   });
 };
 
