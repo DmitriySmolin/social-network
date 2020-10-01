@@ -1,6 +1,5 @@
 import { DialogPageType } from "./redux-store";
 
-const UPDATE_NEW_MESSAGE_BODY = "UPDATE_NEW_MESSAGE_BODY";
 const SEND_MESSAGE = "SEND_MESSAGE";
 
 let initialState = {
@@ -17,21 +16,14 @@ let initialState = {
     { id: 2, message: "How is your it-kamasutra" },
     { id: 3, message: "Yo" },
   ],
-  newMessageBody: "",
 };
 
-export type DialogsActionsTypes = ReturnType<typeof updateNewMessageBodyAC> | ReturnType<typeof sendMessageAC>;
+export type DialogsActionsTypes = ReturnType<typeof sendMessageAC>;
 
 export const dialogsReducer = (state: DialogPageType = initialState, action: DialogsActionsTypes) => {
   switch (action.type) {
-    case UPDATE_NEW_MESSAGE_BODY: {
-      return {
-        ...state,
-        newMessageBody: action.newMessageBody,
-      };
-    }
     case SEND_MESSAGE: {
-      let newMessage = { id: 4, message: state.newMessageBody, cols: 0 };
+      let newMessage = { id: 4, message: action.newMessageBody, cols: 0 };
 
       return {
         ...state,
@@ -44,15 +36,9 @@ export const dialogsReducer = (state: DialogPageType = initialState, action: Dia
   }
 };
 
-export const updateNewMessageBodyAC = (body: string) => {
-  return {
-    type: UPDATE_NEW_MESSAGE_BODY,
-    newMessageBody: body,
-  } as const;
-};
-
-export const sendMessageAC = () => {
+export const sendMessageAC = (newMessageBody: string) => {
   return {
     type: SEND_MESSAGE,
+    newMessageBody: newMessageBody,
   } as const;
 };

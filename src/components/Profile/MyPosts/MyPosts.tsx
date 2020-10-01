@@ -2,51 +2,46 @@ import React from "react";
 import classes from "./MyPosts.module.css";
 import Post from "../Post/Post";
 import { PostType } from "../../../redux/redux-store";
+import { Field, reduxForm } from "redux-form";
 
 type MyPostsPropsType = {
   posts: Array<PostType>;
-  newPostText: string;
-  addPost: () => void;
-  updateNewPosText: (text: string) => void;
+  addPost: (values: string) => void;
 };
 
 const MyPosts: React.FC<MyPostsPropsType> = (props) => {
-  let postsElements = props.posts.map((p) => (
-    <Post key={p.id} message={p.message} likeCount={p.likeCount} />
-  ));
+  let postsElements = props.posts.map((p) => <Post key={p.id} message={p.message} likeCount={p.likeCount} />);
 
-  let newPostElement = React.createRef<HTMLTextAreaElement>();
-
-  const onAddPost = () => {
-    props.addPost();
-  };
-
-  const onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    let text = e.currentTarget.value;
-    props.updateNewPosText(text);
+  const onAddPost = (value: any) => {
+    props.addPost(value.newPostText);
   };
 
   return (
     <div className={classes.post_block}>
       <div>
         <h3>My Posts</h3>
-        <div>
-          <div>
-            <textarea
-              placeholder="Enter your post"
-              ref={newPostElement}
-              value={props.newPostText}
-              onChange={onPostChange}
-            ></textarea>
-          </div>
-          <div>
-            <button onClick={onAddPost}>Add post</button>
-          </div>
-        </div>
+        <AddNewPostFormRedux onSubmit={onAddPost} />
         <div className={classes.posts}>{postsElements}</div>
       </div>
     </div>
   );
 };
+
+const AddNewPostForm: React.FC<any> = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        <Field component="textarea" name="newPostText" placeholder="Enter your post" />
+      </div>
+      <div>
+        <button>Add post</button>
+      </div>
+    </form>
+  );
+};
+
+const AddNewPostFormRedux = reduxForm({
+  form: "ProfileAddNewPostForm",
+})(AddNewPostForm);
 
 export default MyPosts;

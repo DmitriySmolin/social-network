@@ -83,7 +83,6 @@ export type AuthType = {
 
 export type ProfilePageType = {
   posts: Array<PostType>;
-  newPostText: string;
   profile: ProfileType | null;
   status: string;
 };
@@ -91,7 +90,6 @@ export type ProfilePageType = {
 export type DialogPageType = {
   dialogs: Array<DialogType>;
   messages: Array<MessageType>;
-  newMessageBody: string;
 };
 
 export type SidebarType = {};

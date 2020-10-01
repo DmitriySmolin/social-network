@@ -13,7 +13,6 @@ let initialState = {
     { id: 1, message: "Hi, how are you?", likeCount: 11 },
     { id: 2, message: "It's my first post", likeCount: 15 },
   ],
-  newPostText: "",
   profile: null,
   status: "",
 };
@@ -29,7 +28,7 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
     case ADD_POST: {
       let newPost = {
         id: 3,
-        message: state.newPostText,
+        message: action.newPostText,
         likeCount: 0,
       };
 
@@ -39,11 +38,6 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
         newPostText: "",
       };
     }
-    case UPDATE_NEW_POST_TEXT:
-      return {
-        ...state,
-        newPostText: action.newPostText,
-      };
     case SET_USER_PROFILE:
       return {
         ...state,
@@ -59,8 +53,8 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
   }
 };
 
-export const addPostAC = () => {
-  return { type: ADD_POST } as const;
+export const addPostAC = (newPostText: string) => {
+  return { type: ADD_POST, newPostText: newPostText } as const;
 };
 
 export const updateNewPostTextAC = (newPostText: string) => {
@@ -78,7 +72,6 @@ export const setUserProfileAC = (profile: ProfileType) => {
 };
 
 export const setStatusAC = (status: string) => {
-  debugger;
   return {
     type: SET_STATUS,
     status: status,

@@ -1,4 +1,4 @@
-import { DialogsActionsTypes, sendMessageAC, updateNewMessageBodyAC } from "../../redux/dialogs-reducer";
+import { DialogsActionsTypes, sendMessageAC } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import { connect } from "react-redux";
 import { RootStateType } from "../../redux/redux-store";
@@ -14,12 +14,8 @@ let mapStateToProps = (state: RootStateType) => {
 
 let mapDispatchToProps = (dispatch: Dispatch<DialogsActionsTypes>) => {
   return {
-    updateNewMessageBody: (body: string) => {
-      let action = updateNewMessageBodyAC(body);
-      dispatch(action);
-    },
-    sendMessage: () => {
-      dispatch(sendMessageAC());
+    sendMessage: (newMessageBody: string) => {
+      dispatch(sendMessageAC(newMessageBody));
     },
   };
 };
