@@ -5,6 +5,7 @@ import { sidebarReducer } from "./sidebar-reducer";
 import { userReducer } from "./users-reducer";
 import { authReducer } from "./auth-reducer";
 import thunkMiddleware from "redux-thunk";
+import { reducer as formReducer } from "redux-form";
 export type PostType = {
   id: number;
   message: string;
@@ -101,8 +102,12 @@ let reducers = combineReducers({
   sidebar: sidebarReducer,
   usersPage: userReducer,
   auth: authReducer,
+  form: formReducer,
 });
 
 export type RootStateType = ReturnType<typeof reducers>;
 
 export let store: Store = createStore(reducers, applyMiddleware(thunkMiddleware));
+
+// @ts-ignore
+window.store = store;

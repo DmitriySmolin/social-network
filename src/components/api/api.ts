@@ -1,5 +1,4 @@
 import axios from "axios";
-import { stat } from "fs";
 
 const instance = axios.create({
   withCredentials: true,
