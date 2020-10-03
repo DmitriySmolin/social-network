@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./Users.module.css";
 import userPhoto from "../../assets/images/user.png";
-import Prealoder from "../Preloader/Preloader";
+import Prealoder from "../common/Preloader/Preloader";
 import { NavLink } from "react-router-dom";
 import { UserType } from "../../redux/redux-store";
 

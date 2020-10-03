@@ -3,6 +3,8 @@ import classes from "./MyPosts.module.css";
 import Post from "../Post/Post";
 import { PostType } from "../../../redux/redux-store";
 import { Field, reduxForm } from "redux-form";
+import { maxLengthAC, required } from "../../../utils/validators/validators";
+import { Textarea } from "../../common/FormsControls/FormsControls";
 
 type MyPostsPropsType = {
   posts: Array<PostType>;
@@ -27,11 +29,18 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
   );
 };
 
+const maxLength10 = maxLengthAC(10);
+
 const AddNewPostForm: React.FC<any> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
-        <Field component="textarea" name="newPostText" placeholder="Enter your post" />
+        <Field
+          component={Textarea}
+          name="newPostText"
+          placeholder="Enter your post"
+          validate={[required, maxLength10]}
+        />
       </div>
       <div>
         <button>Add post</button>
