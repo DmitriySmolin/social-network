@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { connect } from "react-redux";
-import { authThunkAC, setAuthUserDataAC } from "../../redux/auth-reducer";
+import {  getAuthUserDataThunkAC, logoutThunkAC, setAuthUserDataAC } from "../../redux/auth-reducer";
 import { AuthStateType } from "../../redux/redux-store";
 import { compose } from "redux";
 
@@ -11,16 +11,17 @@ type mapStateToPropsType = {
 };
 
 type mapDispatchToPropsType = {
-  setAuthUserData: (id: number, email: string, login: string) => void;
-  authThunk: () => void;
+  setAuthUserData: (id: number, email: string, login: string,isAuth:boolean) => void;
+  getAuthUserData: () => void;
+  logout: (isAuth: boolean, login: string | null) => void
 };
 
-class HeaderContainer extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
+class HeaderContainer extends React.Component<any> {
   componentDidMount() {
-    this.props.authThunk();
+    this.props.getAuthUserData();
   }
   render() {
-    return <Header isAuth={this.props.isAuth} login={this.props.login} />;
+    return <Header {...this.props} isAuth={this.props.isAuth} login={this.props.login} />;
   }
 }
 
@@ -32,7 +33,8 @@ const mapStateToProps = (state: AuthStateType) => ({
 export default compose(
   connect(mapStateToProps, {
     setAuthUserData: setAuthUserDataAC,
-    authThunk: authThunkAC,
+    getAuthUserData: getAuthUserDataThunkAC,
+    logout:logoutThunkAC,
   })
 )(HeaderContainer);
 

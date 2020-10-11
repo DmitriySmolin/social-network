@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
   withCredentials: true,
-  baseURL: "https://social-network.samuraijs.com/api/1.0/",
-  headers: { "API-KEY": "00e119a9-4fb8-4595-827b-ec20d2d596cd" },
+  baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+  headers: { 'API-KEY': '00e119a9-4fb8-4595-827b-ec20d2d596cd' },
 });
 
 export const userAPI = {
@@ -17,7 +17,7 @@ export const userAPI = {
     return instance.delete(`follow/${userId}`).then((res) => res.data);
   },
   setFollow(userId: number) {
-    console.warn("Obsolete method. Please profileAPI object.");
+    console.warn('Obsolete method. Please profileAPI object.');
     return profileAPI.getProfile(userId);
   },
 };
@@ -36,8 +36,16 @@ export const profileAPI = {
 
 export const authAPI = {
   auth() {
-    return instance.get(`auth/me`).then((res) => {
-      return res.data;
-    });
+    return instance.get(`auth/me`).then((res) => res.data);
+  },
+
+  login(email: string, password: any, rememberMe: any = false) {
+    return instance
+      .post(`auth/login`, { email: email, password: password, rememberMe: rememberMe })
+      .then((res) => res.data);
+  },
+
+  logout() {
+    return instance.delete(`auth/login`).then((res) => res.data);
   },
 };
