@@ -1,4 +1,5 @@
 import { Action, Dispatch } from 'redux';
+import { stopSubmit } from 'redux-form';
 import { ThunkAction } from 'redux-thunk';
 import { authAPI } from '../components/api/api';
 import { RootStateType } from './redux-store';
@@ -59,6 +60,9 @@ export const loginThunkAC = (
   authAPI.login(email, password, rememberMe).then((data) => {
     if (data.resultCode === 0) {
       dispatch(getAuthUserDataThunkAC());
+    } else {
+      let message = data.messages.length > 0 ? data.messages[0] : 'Some error';
+      dispatch(stopSubmit('login', { _error: message }));
     }
   });
 };

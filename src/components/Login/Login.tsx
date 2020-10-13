@@ -1,3 +1,4 @@
+import classes from "../common/FormsControls/FormsControls.module.css";
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -16,9 +17,10 @@ const LoginForm: React.FC<any> = (props) => {
         <Field type="password" placeholder="Password" name="password" validate={[required]} component={Input} />
       </div>
       <div>
-        <Field type="checkbox" name="rememberMe" validate={[required]} component={Input} />
+        <Field type="checkbox" name="rememberMe"  component={Input} />
         remember me
       </div>
+     {props.error && <div className={classes.formSummaryError}>{props.error}</div>}
       <div>
         <button>Login</button>
       </div>
@@ -27,7 +29,7 @@ const LoginForm: React.FC<any> = (props) => {
 };
 
 const LoginReduxForm = reduxForm({
-  form: "contact",
+  form: "login",
 })(LoginForm);
 
 const Login: React.FC<any> = (props) => {
