@@ -44,7 +44,7 @@ export const setAuthUserDataAC = (
 export const getAuthUserDataThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => (
   dispatch: Dispatch<AuthActionTypes>
 ) => {
-  authAPI.auth().then((data) => {
+  return authAPI.auth().then((data) => {
     const { id, email, login } = data.data;
     if (data.resultCode === 0) {
       dispatch(setAuthUserDataAC(id, email, login, true));

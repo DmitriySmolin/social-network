@@ -1,17 +1,17 @@
-import React from "react";
-import Profile from "./Profile";
+import React from 'react';
+import Profile from './Profile';
 
-import { RootStateType, ProfileType } from "../../redux/redux-store";
-import { connect } from "react-redux";
+import { RootStateType, ProfileType } from '../../redux/redux-store';
+import { connect } from 'react-redux';
 import {
   getProfileThunkAC,
   getStatusThunkAC,
   setUserProfileAC,
   updateStatusThunkAC,
-} from "../../redux/profile-reducer";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { withAuthRedirect } from "../hoc/withAuthRedirect";
-import { compose } from "redux";
+} from '../../redux/profile-reducer';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withAuthRedirect } from '../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 type mapStateToPropsType = {
   profile: ProfileType | null;
@@ -30,10 +30,15 @@ type mapDispatchToPropsType = {
 
 class ProfileContainer extends React.Component<
   mapStateToPropsType & mapDispatchToPropsType & RouteComponentProps<{ userId: string }>
-  > {
+> {
   componentDidMount() {
     let userId = +this.props.match.params.userId;
-    if (!userId) userId = this.props.authorizedUserId;
+    if (!userId) {
+      userId = this.props.authorizedUserId;
+      if (!userId) {
+        this.props.history.push('/login');
+      }
+    }
     this.props.getProfileThunk(userId);
     this.props.getStatusThunk(userId);
   }
@@ -54,7 +59,7 @@ const mapStateToProps = (state: RootStateType) => {
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     authorizedUserId: state.auth.userId,
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
   };
 };
 

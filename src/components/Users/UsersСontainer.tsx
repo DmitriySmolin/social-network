@@ -1,5 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 import {
   setCurrentPageAC,
   toggleIsFollowingAC,
@@ -7,11 +7,11 @@ import {
   followThunkAC,
   unfollowThunkAC,
   followSuccesAC,
-} from "../../redux/users-reducer";
-import { UserType, RootStateType } from "../../redux/redux-store";
-import Users from "./Users";
-import { withAuthRedirect } from "../hoc/withAuthRedirect";
-import { compose } from "redux";
+} from '../../redux/users-reducer';
+import { UserType, RootStateType } from '../../redux/redux-store';
+import Users from './Users';
+import { withAuthRedirect } from '../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 type mapStateToPropsType = {
   users: Array<UserType>;
@@ -71,7 +71,6 @@ const mapStateToProps = (state: RootStateType) => {
 };
 
 export default compose(
-  withAuthRedirect,
   connect(mapStateToProps, {
     follow: followSuccesAC,
     unfollow: followSuccesAC,
@@ -82,15 +81,3 @@ export default compose(
     unfollowThunk: unfollowThunkAC,
   })
 )(UsersContainer);
-
-// const AuthRedirectComponent: any = withAuthRedirect(UsersContainer);
-
-// export default connect(mapStateToProps, {
-//   follow: followSuccesAC,
-//   unfollow: followSuccesAC,
-//   setCurrentPage: setCurrentPageAC,
-//   toggleIsFollowing: toggleIsFollowingAC,
-//   getUsersThunk: getUsersThunkAC,
-//   followThunk: followThunkAC,
-//   unfollowThunk: unfollowThunkAC,
-// })(AuthRedirectComponent);
