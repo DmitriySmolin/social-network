@@ -81,6 +81,7 @@ class UsersContainer extends React.Component<mapStateToPropsType & mapDispatchTo
 const mapStateToProps = (state: any) => {
   return {
     users: getUsers(state),
+    // users: getUsers(state),
     pageSize: getPageSize(state),
     totalUsersCount: getTotalUsersCount(state),
     currentPage: getCurrentPage(state),
