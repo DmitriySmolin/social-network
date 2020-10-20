@@ -1,16 +1,16 @@
-import { Dispatch } from "react";
-import { Action } from "redux";
-import { ThunkAction } from "redux-thunk";
-import { userAPI } from "../components/api/api";
-import { UserType, UserPageType, RootStateType } from "./redux-store";
+import { Dispatch } from 'react';
+import { Action } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import { userAPI } from '../components/api/api';
+import { UserType, UserPageType, RootStateType } from './redux-store';
 
-const FOLLOW = "FOLLOW";
-const UNFOLLOW = "UNFOLLOW";
-const SET_USERS = "SET_USERS";
-const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
-const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
-const TOGGLE_IS_FETCHING = "SET_IS_FETCHING";
-const TOGGLE_IS_FOLLOWING = "SET_IS_FOLLOWING";
+const FOLLOW = 'FOLLOW';
+const UNFOLLOW = 'UNFOLLOW';
+const SET_USERS = 'SET_USERS';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
+const TOGGLE_IS_FETCHING = 'SET_IS_FETCHING';
+const TOGGLE_IS_FOLLOWING = 'SET_IS_FOLLOWING';
 
 let initialState = {
   users: [],
@@ -148,7 +148,7 @@ export const followThunkAC = (userId: number): ThunkAction<void, RootStateType, 
   dispatch(toggleIsFollowingAC(true, userId));
 
   userAPI.setFollow(userId).then((data) => {
-    if (data.resultCode === 0) dispatch(followSuccesAC(userId));
+    dispatch(followSuccesAC(userId));
     dispatch(toggleIsFollowingAC(false, userId));
   });
 };
@@ -159,7 +159,7 @@ export const unfollowThunkAC = (userId: number): ThunkAction<void, RootStateType
   dispatch(toggleIsFollowingAC(true, userId));
 
   userAPI.setUnfollow(userId).then((data) => {
-    if (data.resultCode === 0) dispatch(unfollowSuccesAC(userId));
+    dispatch(unfollowSuccesAC(userId));
     dispatch(toggleIsFollowingAC(false, userId));
   });
 };
