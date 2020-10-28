@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type ProfileStatusPropsType = {
   status: string;
@@ -16,6 +16,7 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType> {
       editMode: true,
     });
   };
+
   deactivatedMode = () => {
     this.setState({
       editMode: false,
