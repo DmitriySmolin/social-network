@@ -1,20 +1,20 @@
-import { Action, Dispatch } from "redux";
-import { ThunkAction } from "redux-thunk";
-import { profileAPI, userAPI } from "../components/api/api";
-import { ProfilePageType, ProfileType, RootStateType } from "./redux-store";
+import { Action, Dispatch } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import { profileAPI, userAPI } from '../components/api/api';
+import { ProfilePageType, ProfileType, RootStateType } from './redux-store';
 
-const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_STATUS = "SET_STATUS";
+const ADD_POST = 'ADD-POST';
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+const SET_USER_PROFILE = 'SET_USER_PROFILE';
+const SET_STATUS = 'SET_STATUS';
 
 let initialState = {
   posts: [
-    { id: 1, message: "Hi, how are you?", likeCount: 11 },
+    { id: 1, message: 'Hi, how are you?', likeCount: 11 },
     { id: 2, message: "It's my first post", likeCount: 15 },
   ],
   profile: null,
-  status: "",
+  status: '',
 };
 
 export type ProfileActionsTypes =
@@ -35,7 +35,7 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
       return {
         ...state,
         posts: [...state.posts, newPost],
-        newPostText: "",
+        newPostText: '',
       };
     }
     case SET_USER_PROFILE:
