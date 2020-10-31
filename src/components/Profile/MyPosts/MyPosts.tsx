@@ -1,23 +1,24 @@
-import React from "react";
-import classes from "./MyPosts.module.css";
-import Post from "../Post/Post";
-import { PostType } from "../../../redux/redux-store";
-import { Field, reduxForm } from "redux-form";
-import { maxLengthAC, required } from "../../../utils/validators/validators";
-import { Textarea } from "../../common/FormsControls/FormsControls";
+import React from 'react';
+import classes from './MyPosts.module.css';
+import Post from '../Post/Post';
+import { PostType } from '../../../redux/redux-store';
+import { Field, reduxForm } from 'redux-form';
+import { maxLengthAC, required } from '../../../utils/validators/validators';
+import { Textarea } from '../../common/FormsControls/FormsControls';
 
 type MyPostsPropsType = {
   posts: Array<PostType>;
   addPost: (values: string) => void;
 };
 
-const MyPosts: React.FC<MyPostsPropsType> = (props) => {
-  let postsElements = props.posts.map((p) => <Post key={p.id} message={p.message} likeCount={p.likeCount} />);
+const MyPosts: React.FC<MyPostsPropsType> = React.memo((props) => {
+  console.log('RENDER ');
 
   const onAddPost = (value: any) => {
     props.addPost(value.newPostText);
   };
 
+  let postsElements = props.posts.map((p) => <Post key={p.id} message={p.message} likeCount={p.likeCount} />);
   return (
     <div className={classes.post_block}>
       <div>
@@ -27,7 +28,7 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
       </div>
     </div>
   );
-};
+});
 
 const maxLength10 = maxLengthAC(10);
 
@@ -50,7 +51,7 @@ const AddNewPostForm: React.FC<any> = (props) => {
 };
 
 const AddNewPostFormRedux = reduxForm({
-  form: "ProfileAddNewPostForm",
+  form: 'ProfileAddNewPostForm',
 })(AddNewPostForm);
 
 export default MyPosts;
