@@ -7,6 +7,7 @@ const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
+const DELETE_POST = 'DELETE_POST';
 
 let initialState = {
   posts: [
@@ -21,7 +22,8 @@ export type ProfileActionsTypes =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof updateNewPostTextAC>
   | ReturnType<typeof setUserProfileAC>
-  | ReturnType<typeof setStatusAC>;
+  | ReturnType<typeof setStatusAC>
+  | ReturnType<typeof deletePostAC>;
 
 export const profileReducer = (state: ProfilePageType = initialState, action: ProfileActionsTypes) => {
   switch (action.type) {
@@ -47,6 +49,11 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
       return {
         ...state,
         status: action.status,
+      };
+    case DELETE_POST:
+      return {
+        ...state,
+        posts: state.posts.filter((p) => p.id !== action.postId),
       };
     default:
       return state;
@@ -75,6 +82,13 @@ export const setStatusAC = (status: string) => {
   return {
     type: SET_STATUS,
     status: status,
+  } as const;
+};
+
+export const deletePostAC = (postId: number) => {
+  return {
+    type: DELETE_POST,
+    postId: postId,
   } as const;
 };
 

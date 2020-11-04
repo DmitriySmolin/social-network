@@ -1,35 +1,38 @@
-import { profileReducer, updateNewPostTextAC, addPostAC } from "./profile-reducer";
-import { ProfilePageType } from "./redux-store";
+import { profileReducer, updateNewPostTextAC, addPostAC, deletePostAC } from './profile-reducer';
 
-test("correct dialogsPage update new message body", () => {
-  let startState: ProfilePageType = {
-    posts: [
-      { id: 1, message: "Hi, how are you?", likeCount: 11 },
-      { id: 2, message: "It's my first post", likeCount: 15 },
-    ],
-    newPostText: "",
-    profile: null,
-  };
+let startState: any = {
+  posts: [
+    { id: 1, message: 'Hi, how are you?', likeCount: 11 },
+    { id: 2, message: "It's my first post", likeCount: 15 },
+  ],
+  profile: null,
+  status: '',
+};
 
-  const endState = profileReducer(startState, addPostAC());
+test('length of posts should be incremented', () => {
+  let action = addPostAC('it-kamasutra.com');
+  const endState = profileReducer(startState, action);
 
   expect(endState.posts.length).toBe(3);
 });
 
-test("correct dialogsPage send message", () => {
-  let startState = {
-    posts: [
-      { id: 1, message: "Hi, how are you?", likeCount: 11 },
-      { id: 2, message: "It's my first post", likeCount: 15 },
-    ],
-    newPostText: "",
-    profile: null,
-  };
+test('message of new posts should be correct', () => {
+  let action = addPostAC('it-kamasutra.com');
+  const endState = profileReducer(startState, action);
 
-  let newText = "It's new text";
+  expect(endState.posts[2].message).toBe('it-kamasutra.com');
+});
 
-  const endState = profileReducer(startState, updateNewPostTextAC(newText));
+test('after deleting length of messages should be decrement', () => {
+  let action = deletePostAC(1);
+  const endState = profileReducer(startState, action);
 
-  expect(endState.newPostText).toBe("It's new text");
-  // expect(endState[0].id).toBe(todolistId2);
+  expect(endState.posts.length).toBe(1);
+});
+
+test("after deleting length shouldn't be decrement if id is incorrect", () => {
+  let action = deletePostAC(1000);
+  const endState = profileReducer(startState, action);
+
+  expect(endState.posts.length).toBe(2);
 });

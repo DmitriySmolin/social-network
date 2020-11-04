@@ -18,12 +18,13 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 exports.__esModule = true;
-exports.updateStatusThunkAC = exports.getStatusThunkAC = exports.getProfileThunkAC = exports.setStatusAC = exports.setUserProfileAC = exports.updateNewPostTextAC = exports.addPostAC = exports.profileReducer = void 0;
+exports.updateStatusThunkAC = exports.getStatusThunkAC = exports.getProfileThunkAC = exports.deletePostAC = exports.setStatusAC = exports.setUserProfileAC = exports.updateNewPostTextAC = exports.addPostAC = exports.profileReducer = void 0;
 var api_1 = require("../components/api/api");
 var ADD_POST = 'ADD-POST';
 var UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 var SET_USER_PROFILE = 'SET_USER_PROFILE';
 var SET_STATUS = 'SET_STATUS';
+var DELETE_POST = 'DELETE_POST';
 var initialState = {
     posts: [
         { id: 1, message: 'Hi, how are you?', likeCount: 11 },
@@ -47,6 +48,8 @@ exports.profileReducer = function (state, action) {
             return __assign(__assign({}, state), { profile: action.profile });
         case SET_STATUS:
             return __assign(__assign({}, state), { status: action.status });
+        case DELETE_POST:
+            return __assign(__assign({}, state), { posts: state.posts.filter(function (p) { return p.id !== action.postId; }) });
         default:
             return state;
     }
@@ -70,6 +73,12 @@ exports.setStatusAC = function (status) {
     return {
         type: SET_STATUS,
         status: status
+    };
+};
+exports.deletePostAC = function (postId) {
+    return {
+        type: DELETE_POST,
+        postId: postId
     };
 };
 exports.getProfileThunkAC = function (userId) { return function (dispatch) {
