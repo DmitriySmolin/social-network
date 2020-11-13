@@ -46,110 +46,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 exports.__esModule = true;
-exports.updateStatusThunkAC = exports.getStatusThunkAC = exports.getProfileThunkAC = exports.deletePostAC = exports.setStatusAC = exports.setUserProfileAC = exports.updateNewPostTextAC = exports.addPostAC = exports.profileReducer = void 0;
+exports.logoutThunkAC = exports.loginThunkAC = exports.getAuthUserDataThunkAC = exports.setAuthUserDataAC = exports.authReducer = void 0;
+var redux_form_1 = require("redux-form");
 var api_1 = require("../components/api/api");
-var ADD_POST = 'ADD-POST';
-var UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-var SET_USER_PROFILE = 'SET_USER_PROFILE';
-var SET_STATUS = 'SET_STATUS';
-var DELETE_POST = 'DELETE_POST';
+var SET_USER_DATA = 'samurai-network/auth/SET_USER_DATA';
 var initialState = {
-    posts: [
-        { id: 1, message: 'Hi, how are you?', likeCount: 11 },
-        { id: 2, message: "It's my first post", likeCount: 15 },
-    ],
-    profile: null,
-    status: ''
+    userId: null,
+    email: null,
+    login: null,
+    isAuth: false
 };
-exports.profileReducer = function (state, action) {
+exports.authReducer = function (state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
-        case ADD_POST: {
-            var newPost = {
-                id: 3,
-                message: action.newPostText,
-                likeCount: 0
-            };
-            return __assign(__assign({}, state), { posts: __spreadArrays(state.posts, [newPost]), newPostText: '' });
+        case SET_USER_DATA: {
+            return __assign(__assign({}, state), action.payload);
         }
-        case SET_USER_PROFILE:
-            return __assign(__assign({}, state), { profile: action.profile });
-        case SET_STATUS:
-            return __assign(__assign({}, state), { status: action.status });
-        case DELETE_POST:
-            return __assign(__assign({}, state), { posts: state.posts.filter(function (p) { return p.id !== action.postId; }) });
         default:
             return state;
     }
 };
-exports.addPostAC = function (newPostText) {
-    return { type: ADD_POST, newPostText: newPostText };
-};
-exports.updateNewPostTextAC = function (newPostText) {
+exports.setAuthUserDataAC = function (userId, email, login, isAuth) {
     return {
-        type: UPDATE_NEW_POST_TEXT,
-        newPostText: newPostText
+        type: SET_USER_DATA,
+        payload: { userId: userId, email: email, login: login, isAuth: isAuth }
     };
 };
-exports.setUserProfileAC = function (profile) {
-    return {
-        type: SET_USER_PROFILE,
-        profile: profile
-    };
-};
-exports.setStatusAC = function (status) {
-    return {
-        type: SET_STATUS,
-        status: status
-    };
-};
-exports.deletePostAC = function (postId) {
-    return {
-        type: DELETE_POST,
-        postId: postId
-    };
-};
-exports.getProfileThunkAC = function (userId) { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
-    var data;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, api_1.userAPI.getProfile(userId)];
+exports.getAuthUserDataThunkAC = function () { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, _a, id, email, login;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, api_1.authAPI.auth()];
             case 1:
-                data = _a.sent();
-                dispatch(exports.setUserProfileAC(data));
+                data = _b.sent();
+                _a = data.data, id = _a.id, email = _a.email, login = _a.login;
+                if (data.resultCode === 0) {
+                    dispatch(exports.setAuthUserDataAC(id, email, login, true));
+                }
                 return [2 /*return*/];
         }
     });
 }); }; };
-exports.getStatusThunkAC = function (userId) { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
-    var data;
+exports.loginThunkAC = function (email, password, rememberMe) { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, message;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, api_1.profileAPI.getStatus(userId)];
-            case 1:
-                data = _a.sent();
-                dispatch(exports.setStatusAC(data));
-                return [2 /*return*/];
-        }
-    });
-}); }; };
-exports.updateStatusThunkAC = function (status) { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
-    var data;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, api_1.profileAPI.updateStatus(status)];
+            case 0: return [4 /*yield*/, api_1.authAPI.login(email, password, rememberMe)];
             case 1:
                 data = _a.sent();
                 if (data.resultCode === 0) {
-                    dispatch(exports.setStatusAC(status));
+                    dispatch(exports.getAuthUserDataThunkAC());
+                }
+                else {
+                    message = data.messages.length > 0 ? data.messages[0] : 'Some error';
+                    dispatch(redux_form_1.stopSubmit('login', { _error: message }));
+                }
+                return [2 /*return*/];
+        }
+    });
+}); }; };
+exports.logoutThunkAC = function () { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
+    var data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, api_1.authAPI.logout()];
+            case 1:
+                data = _a.sent();
+                if (data.resultCode === 0) {
+                    dispatch(exports.setAuthUserDataAC(null, null, null, false));
                 }
                 return [2 /*return*/];
         }

@@ -4,7 +4,7 @@ import { ThunkAction } from 'redux-thunk';
 import { authAPI } from '../components/api/api';
 import { RootStateType } from './redux-store';
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_DATA = 'samurai-network/auth/SET_USER_DATA';
 
 let initialState = {
   userId: null,
@@ -41,38 +41,38 @@ export const setAuthUserDataAC = (
   } as const;
 };
 
-export const getAuthUserDataThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+export const getAuthUserDataThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => async (
   dispatch: Dispatch<AuthActionTypes>
 ) => {
-  return authAPI.auth().then((data) => {
-    const { id, email, login } = data.data;
-    if (data.resultCode === 0) {
-      dispatch(setAuthUserDataAC(id, email, login, true));
-    }
-  });
+  let data = await authAPI.auth();
+
+  const { id, email, login } = data.data;
+  if (data.resultCode === 0) {
+    dispatch(setAuthUserDataAC(id, email, login, true));
+  }
 };
 
 export const loginThunkAC = (
   email: string,
   password: any,
   rememberMe: any
-): ThunkAction<void, RootStateType, unknown, Action<string>> => (dispatch: Dispatch<any>) => {
-  authAPI.login(email, password, rememberMe).then((data) => {
-    if (data.resultCode === 0) {
-      dispatch(getAuthUserDataThunkAC());
-    } else {
-      let message = data.messages.length > 0 ? data.messages[0] : 'Some error';
-      dispatch(stopSubmit('login', { _error: message }));
-    }
-  });
+): ThunkAction<void, RootStateType, unknown, Action<string>> => async (dispatch: Dispatch<any>) => {
+  let data = await authAPI.login(email, password, rememberMe);
+
+  if (data.resultCode === 0) {
+    dispatch(getAuthUserDataThunkAC());
+  } else {
+    let message = data.messages.length > 0 ? data.messages[0] : 'Some error';
+    dispatch(stopSubmit('login', { _error: message }));
+  }
 };
 
-export const logoutThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+export const logoutThunkAC = (): ThunkAction<void, RootStateType, unknown, Action<string>> => async (
   dispatch: Dispatch<any>
 ) => {
-  authAPI.logout().then((data) => {
-    if (data.resultCode === 0) {
-      dispatch(setAuthUserDataAC(null, null, null, false));
-    }
-  });
+  let data = await authAPI.logout();
+
+  if (data.resultCode === 0) {
+    dispatch(setAuthUserDataAC(null, null, null, false));
+  }
 };

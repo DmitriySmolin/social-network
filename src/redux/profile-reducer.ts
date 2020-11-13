@@ -92,28 +92,28 @@ export const deletePostAC = (postId: number) => {
   } as const;
 };
 
-export const getProfileThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+export const getProfileThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => async (
   dispatch: Dispatch<ProfileActionsTypes>
 ) => {
-  userAPI.getProfile(userId).then((data) => {
-    dispatch(setUserProfileAC(data));
-  });
+  let data = await userAPI.getProfile(userId);
+
+  dispatch(setUserProfileAC(data));
 };
 
-export const getStatusThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+export const getStatusThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => async (
   dispatch: Dispatch<ProfileActionsTypes>
 ) => {
-  profileAPI.getStatus(userId).then((data) => {
-    dispatch(setStatusAC(data));
-  });
+  let data = await profileAPI.getStatus(userId);
+
+  dispatch(setStatusAC(data));
 };
 
-export const updateStatusThunkAC = (status: string): ThunkAction<void, RootStateType, unknown, Action<string>> => (
-  dispatch: Dispatch<ProfileActionsTypes>
-) => {
-  profileAPI.updateStatus(status).then((data) => {
-    if (data.resultCode === 0) {
-      dispatch(setStatusAC(status));
-    }
-  });
+export const updateStatusThunkAC = (
+  status: string
+): ThunkAction<void, RootStateType, unknown, Action<string>> => async (dispatch: Dispatch<ProfileActionsTypes>) => {
+  let data = await profileAPI.updateStatus(status);
+
+  if (data.resultCode === 0) {
+    dispatch(setStatusAC(status));
+  }
 };

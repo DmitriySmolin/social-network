@@ -8,9 +8,8 @@ import {
   unfollowThunkAC,
   followSuccesAC,
 } from '../../redux/users-reducer';
-import { UserType, RootStateType } from '../../redux/redux-store';
+import { UserType } from '../../redux/redux-store';
 import Users from './Users';
-import { withAuthRedirect } from '../hoc/withAuthRedirect';
 import { compose } from 'redux';
 import {
   getCurrentPage,
@@ -31,8 +30,6 @@ type mapStateToPropsType = {
 };
 
 type mapDispatchToPropsType = {
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
   setCurrentPage: (currentPage: number) => void;
   getUsersThunk: (currentPage: number, pageSize: number) => void;
   followThunk: (userId: number) => void;
@@ -41,11 +38,13 @@ type mapDispatchToPropsType = {
 
 class UsersContainer extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
   componentDidMount() {
-    this.props.getUsersThunk(this.props.currentPage, this.props.pageSize);
+    const { currentPage, pageSize } = this.props;
+    this.props.getUsersThunk(currentPage, pageSize);
   }
 
   onSetCurrentPage = (pageNumber: number) => {
-    this.props.getUsersThunk(pageNumber, this.props.pageSize);
+    const { pageSize } = this.props;
+    this.props.getUsersThunk(pageNumber, pageSize);
   };
 
   render() {
@@ -56,8 +55,6 @@ class UsersContainer extends React.Component<mapStateToPropsType & mapDispatchTo
         totalUsersCount={this.props.totalUsersCount}
         currentPage={this.props.currentPage}
         isFetching={this.props.isFetching}
-        followSuccess={this.props.follow}
-        unfollowSuccess={this.props.unfollow}
         onSetCurrentPage={this.onSetCurrentPage}
         isArrayFollowing={this.props.isArrayFollowing}
         followThunk={this.props.followThunk}

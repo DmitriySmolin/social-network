@@ -1,26 +1,19 @@
-import classes from "../common/FormsControls/FormsControls.module.css";
-import React from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Field, reduxForm } from "redux-form";
-import { loginThunkAC } from "../../redux/auth-reducer";
-import { required } from "../../utils/validators/validators";
-import { Input } from "../common/FormsControls/FormsControls";
+import classes from '../common/FormsControls/FormsControls.module.css';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { reduxForm } from 'redux-form';
+import { loginThunkAC } from '../../redux/auth-reducer';
+import { required } from '../../utils/validators/validators';
+import { createField, Input } from '../common/FormsControls/FormsControls';
 
-const LoginForm: React.FC<any> = (props) => {
+const LoginForm: React.FC<any> = ({ handleSubmit, error }) => {
   return (
-    <form action="" onSubmit={props.handleSubmit}>
-      <div>
-        <Field type="text" placeholder="Email" name="email" validate={[required]} component={Input} />
-      </div>
-      <div>
-        <Field type="password" placeholder="Password" name="password" validate={[required]} component={Input} />
-      </div>
-      <div>
-        <Field type="checkbox" name="rememberMe"  component={Input} />
-        remember me
-      </div>
-     {props.error && <div className={classes.formSummaryError}>{props.error}</div>}
+    <form action="" onSubmit={handleSubmit}>
+      {createField('Email', 'email', [required], Input)}
+      {createField('Password', 'password', [required], Input, { type: 'password' })}
+      {createField('', 'rememberMe', '', Input, { type: 'checkbox' }, 'rememberMe')}
+      {error && <div className={classes.formSummaryError}>{error}</div>}
       <div>
         <button>Login</button>
       </div>
@@ -29,16 +22,16 @@ const LoginForm: React.FC<any> = (props) => {
 };
 
 const LoginReduxForm = reduxForm({
-  form: "login",
+  form: 'login',
 })(LoginForm);
 
 const Login: React.FC<any> = (props) => {
   const onSubmit = (formData: any) => {
-    props.login(formData.email,formData.password,formData.rememberMe);
+    props.login(formData.email, formData.password, formData.rememberMe);
   };
 
-  if(props.isAuth){
-    return <Redirect to="/profile"/>
+  if (props.isAuth) {
+    return <Redirect to="/profile" />;
   }
 
   return (
@@ -49,11 +42,10 @@ const Login: React.FC<any> = (props) => {
   );
 };
 
-const mapStateToProps = (state:any)=> ({
-  isAuth: state.auth.isAuth
-})
+const mapStateToProps = (state: any) => ({
+  isAuth: state.auth.isAuth,
+});
 
-export default connect(mapStateToProps,{
-  login:loginThunkAC,
-
+export default connect(mapStateToProps, {
+  login: loginThunkAC,
 })(Login);

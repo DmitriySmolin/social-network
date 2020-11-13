@@ -1,9 +1,9 @@
-import React from "react";
-import Header from "./Header";
-import { connect } from "react-redux";
-import {  getAuthUserDataThunkAC, logoutThunkAC, setAuthUserDataAC } from "../../redux/auth-reducer";
-import { AuthStateType } from "../../redux/redux-store";
-import { compose } from "redux";
+import React from 'react';
+import Header from './Header';
+import { connect } from 'react-redux';
+import { logoutThunkAC } from '../../redux/auth-reducer';
+import { AuthStateType } from '../../redux/redux-store';
+import { compose } from 'redux';
 
 type mapStateToPropsType = {
   isAuth: boolean;
@@ -11,11 +11,10 @@ type mapStateToPropsType = {
 };
 
 type mapDispatchToPropsType = {
-  logout: (isAuth: boolean, login: string | null) => void
+  logout: (isAuth: boolean, login: string | null) => void;
 };
 
 class HeaderContainer extends React.Component<any> {
-
   render() {
     return <Header {...this.props} isAuth={this.props.isAuth} login={this.props.login} />;
   }
@@ -28,7 +27,7 @@ const mapStateToProps = (state: AuthStateType) => ({
 
 export default compose(
   connect(mapStateToProps, {
-    logout:logoutThunkAC,
+    logout: logoutThunkAC,
   })
 )(HeaderContainer);
 

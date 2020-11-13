@@ -12,8 +12,6 @@ type MyPostsPropsType = {
 };
 
 const MyPosts: React.FC<MyPostsPropsType> = React.memo((props) => {
-  console.log('RENDER ');
-
   const onAddPost = (value: any) => {
     props.addPost(value.newPostText);
   };

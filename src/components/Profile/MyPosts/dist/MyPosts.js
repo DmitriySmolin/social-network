@@ -7,7 +7,6 @@ var redux_form_1 = require("redux-form");
 var validators_1 = require("../../../utils/validators/validators");
 var FormsControls_1 = require("../../common/FormsControls/FormsControls");
 var MyPosts = react_1["default"].memo(function (props) {
-    console.log('RENDER ');
     var onAddPost = function (value) {
         props.addPost(value.newPostText);
     };

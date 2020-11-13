@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { userAPI } from '../components/api/api';
+import { updateObjectInArray } from '../utils/object-helpers';
 import { UserType, UserPageType, RootStateType } from './redux-store';
 
 const FOLLOW = 'FOLLOW';
@@ -35,22 +36,12 @@ export const userReducer = (state: UserPageType = initialState, action: UsersAct
     case FOLLOW:
       return {
         ...state,
-        users: state.users.map((u: UserType) => {
-          if (u.id === action.userId) {
-            return { ...u, followed: true };
-          }
-          return u;
-        }),
+        users: updateObjectInArray(state.users, action.userId, 'id', { followed: true }),
       };
     case UNFOLLOW:
       return {
         ...state,
-        users: state.users.map((u: UserType) => {
-          if (u.id === action.userId) {
-            return { ...u, followed: false };
-          }
-          return u;
-        }),
+        users: updateObjectInArray(state.users, action.userId, 'id', { followed: false }),
       };
     case SET_USERS:
       return {
@@ -131,35 +122,42 @@ export const toggleIsFollowingAC = (isFollowing: boolean, userId: number) => {
   } as const;
 };
 
-export const getUsersThunkAC = (currentPage: number, pageSize: number) => (dispatch: Dispatch<UsersActionTypes>) => {
+export const getUsersThunkAC = (currentPage: number, pageSize: number) => async (
+  dispatch: Dispatch<UsersActionTypes>
+) => {
   dispatch(toggleIsFetchingAC(true));
 
-  userAPI.getUsers(currentPage, pageSize).then((data) => {
-    dispatch(setUsersAC(data.items));
-    dispatch(setTotalUsersCountAC(data.totalCount));
-    dispatch(toggleIsFetchingAC(false));
-    dispatch(setCurrentPageAC(currentPage));
-  });
+  let data = await userAPI.getUsers(currentPage, pageSize);
+
+  dispatch(setUsersAC(data.items));
+  dispatch(setTotalUsersCountAC(data.totalCount));
+  dispatch(toggleIsFetchingAC(false));
+  dispatch(setCurrentPageAC(currentPage));
 };
 
-export const followThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
-  dispatch: Dispatch<UsersActionTypes>
+const followUnfollowFollow = async (
+  dispatch: Dispatch<UsersActionTypes>,
+  userId: number,
+  apiMethod: (userId: number) => void,
+  actionCreator: any
 ) => {
   dispatch(toggleIsFollowingAC(true, userId));
 
-  userAPI.setFollow(userId).then((data) => {
-    dispatch(followSuccesAC(userId));
-    dispatch(toggleIsFollowingAC(false, userId));
-  });
+  // let data = await apiMethod(userId); ###
+
+  dispatch(actionCreator(userId));
+
+  dispatch(toggleIsFollowingAC(false, userId));
 };
 
-export const unfollowThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => (
+export const followThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => async (
   dispatch: Dispatch<UsersActionTypes>
 ) => {
-  dispatch(toggleIsFollowingAC(true, userId));
+  followUnfollowFollow(dispatch, userId, userAPI.setFollow.bind(userAPI), followSuccesAC);
+};
 
-  userAPI.setUnfollow(userId).then((data) => {
-    dispatch(unfollowSuccesAC(userId));
-    dispatch(toggleIsFollowingAC(false, userId));
-  });
+export const unfollowThunkAC = (userId: number): ThunkAction<void, RootStateType, unknown, Action<string>> => async (
+  dispatch: Dispatch<UsersActionTypes>
+) => {
+  followUnfollowFollow(dispatch, userId, userAPI.setUnfollow.bind(userAPI), unfollowSuccesAC);
 };
